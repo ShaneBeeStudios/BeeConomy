@@ -1,0 +1,12 @@
+name: BeeConomy
+main: com.shanebeestudios.bc.BeeConomy
+version: '${project.version}'
+author: ShaneBee
+softdepend:
+  - Vault
+commands:
+  eco:
+    description: Base economy command
+    aliases:
+      - economy
+      - money

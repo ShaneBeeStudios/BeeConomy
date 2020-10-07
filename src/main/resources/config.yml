@@ -1,0 +1,13 @@
+# BeeConomy
+# By: ShaneBee
+
+# Message prefix
+prefix: '&7[<#23C8A8>&lBee<#23B4C8>&lConomy&7] '
+
+economy:
+  # The amount of money new players will receive
+  starting-amount: 100.0
+  # The name of the currency
+  name: 'money'
+  # The symbol for the currency
+  symbol: '$'
