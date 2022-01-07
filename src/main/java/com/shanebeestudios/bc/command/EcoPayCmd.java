@@ -32,6 +32,10 @@ public class EcoPayCmd extends EcoBaseCmd {
                 EconomyPlayer ecoSender = economyManager.getEcoPlayer(((Player) sender));
                 if (ecoReceiver != null) {
                     assert ecoSender != null;
+                    if (ecoSender == ecoReceiver) {
+                        Util.sendColMsg(sender, "&cYou can not pay yourself!");
+                        return true;
+                    }
                     if (ecoSender.getBalance() < amount) {
                         Util.sendColMsg(sender, "&cYou do not have enough %s to send.", Config.ECO_NAME);
                         return true;
