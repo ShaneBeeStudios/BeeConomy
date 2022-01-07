@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 public class EcoPayCmd extends EcoBaseCmd {
 
     public EcoPayCmd() {
+        super("pay", null);
         this.usage = "pay <player> <amount>";
     }
 

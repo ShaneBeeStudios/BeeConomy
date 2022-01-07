@@ -14,36 +14,53 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class CommandListener implements TabExecutor {
 
-    private final Map<String, EcoBaseCmd> COMMANDS;
-    private final String COMMAND_STRING;
+    private final List<EcoBaseCmd> COMMANDS = new ArrayList<>();
+    private final List<String> COMMAND_NAMES = new ArrayList<>();
+    private final String COMMANDS_STRING;
 
-    public CommandListener(Map<String, EcoBaseCmd> commands) {
-        this.COMMANDS = commands;
+    public CommandListener(List<Class<? extends EcoBaseCmd>> commands) {
         StringBuilder builder = new StringBuilder();
-        for (String s : COMMANDS.keySet()) {
-            builder.append("&b").append(s).append("&7, ");
-        }
-        COMMAND_STRING = builder.toString();
+        commands.forEach(cmdClass -> {
+            try {
+                EcoBaseCmd ecoBaseCmd = cmdClass.newInstance();
+                String cmdName = ecoBaseCmd.getName();
+                String alias = ecoBaseCmd.getAlias();
+                COMMANDS.add(ecoBaseCmd);
+                COMMAND_NAMES.add(cmdName);
+                builder.append("&b").append(cmdName);
+                if (alias != null) {
+                    COMMAND_NAMES.add(alias);
+                    builder.append("&7(&b").append(alias).append("&7)");
+                }
+                builder.append("&7, ");
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+        COMMANDS_STRING = builder.substring(0, builder.length() - 2);
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (args.length > 0) {
-            String cmd = args[0];
-            if (COMMANDS.containsKey(cmd)) {
-                EcoBaseCmd baseCmd = COMMANDS.get(cmd);
-                if (sender instanceof Player && !sender.hasPermission("eco.command." + cmd)) {
+            EcoBaseCmd command = null;
+            for (EcoBaseCmd baseCmd : COMMANDS) {
+                if (baseCmd.matches(args[0])) {
+                    command = baseCmd;
+                }
+            }
+            if (command != null) {
+                if (sender instanceof Player && !command.hasPermission(sender)) {
                     Util.sendColMsg(sender, "&cYou do not have permission to use this command.");
                 }
-                baseCmd.processCmd(sender, args);
+                command.processCmd(sender, args);
                 return true;
             }
         }
-        Util.sendColMsg(sender, "&cUnknown command. &7Options: &b" + COMMAND_STRING.substring(0, COMMAND_STRING.length() - 2));
+        Util.sendColMsg(sender, "&cUnknown command. &7Options: &b" + COMMANDS_STRING);
         return true;
     }
 
@@ -51,7 +68,7 @@ public class CommandListener implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], COMMANDS.keySet(), new ArrayList<>());
+            return StringUtil.copyPartialMatches(args[0], COMMAND_NAMES, new ArrayList<>());
         }
         if (args.length >= 2) {
             String arg = args[0];

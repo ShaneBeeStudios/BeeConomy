@@ -10,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 public class EcoRemoveCmd extends EcoBaseCmd {
 
     public EcoRemoveCmd() {
+        super("remove", null);
         this.usage = "remove <player> <amount>";
     }
 

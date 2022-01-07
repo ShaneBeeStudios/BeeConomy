@@ -10,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 public class EcoAddCmd extends EcoBaseCmd {
 
     public EcoAddCmd() {
+        super("add", null);
         this.usage = "add <player> <amount>";
     }
 

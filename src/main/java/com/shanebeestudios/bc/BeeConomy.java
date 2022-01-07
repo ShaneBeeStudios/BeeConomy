@@ -20,8 +20,8 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BeeConomy extends JavaPlugin {
 
@@ -63,12 +63,12 @@ public class BeeConomy extends JavaPlugin {
 
     @SuppressWarnings("ConstantConditions")
     private void registerCommands() {
-        Map<String, EcoBaseCmd> commands = new HashMap<>();
-        commands.put("set", new EcoSetCmd());
-        commands.put("add", new EcoAddCmd());
-        commands.put("remove", new EcoRemoveCmd());
-        commands.put("pay", new EcoPayCmd());
-        commands.put("balance", new EcoBalCmd());
+        List<Class<? extends EcoBaseCmd>> commands = new ArrayList<>();
+        commands.add(EcoAddCmd.class);
+        commands.add(EcoBalCmd.class);
+        commands.add(EcoPayCmd.class);
+        commands.add(EcoRemoveCmd.class);
+        commands.add(EcoSetCmd.class);
 
         this.commandListener = new CommandListener(commands);
         PluginCommand command = getCommand("eco");

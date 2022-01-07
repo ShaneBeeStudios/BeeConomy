@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 public class EcoBalCmd extends EcoBaseCmd {
 
     public EcoBalCmd() {
+        super("balance", "bal");
         this.usage = "balance";
     }
 

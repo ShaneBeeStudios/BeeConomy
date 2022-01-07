@@ -10,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 public class EcoSetCmd extends EcoBaseCmd {
 
     public EcoSetCmd() {
+        super("set", null);
         this.usage = "set <player> <amount>";
     }
 

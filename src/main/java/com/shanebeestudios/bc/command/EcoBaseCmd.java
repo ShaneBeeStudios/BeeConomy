@@ -10,10 +10,14 @@ public abstract class EcoBaseCmd {
     final BeeConomy plugin;
     final EconomyManager economyManager;
     CommandSender sender;
+    String cmdName;
+    String cmdAlias;
     String[] args;
     String usage = "";
 
-    public EcoBaseCmd() {
+    public EcoBaseCmd(String cmdName, String cmdAlias) {
+        this.cmdName = cmdName;
+        this.cmdAlias = cmdAlias;
         this.plugin = BeeConomy.getInstance();
         this.economyManager = plugin.getEcoManager();
     }
@@ -32,5 +36,21 @@ public abstract class EcoBaseCmd {
     }
 
     public abstract boolean run();
+
+    public String getName() {
+        return cmdName;
+    }
+
+    public String getAlias() {
+        return cmdAlias;
+    }
+
+    public boolean matches(String command) {
+        return cmdName.equalsIgnoreCase(command) || (cmdAlias != null && cmdAlias.equalsIgnoreCase(command));
+    }
+
+    public boolean hasPermission(CommandSender sender) {
+        return sender.hasPermission("eco.command." + cmdName);
+    }
 
 }
