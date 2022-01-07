@@ -75,9 +75,6 @@ public class CustomEconomy extends AbstractEconomy {
     public double getBalance(String playerName) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
         EconomyPlayer ecoPlayer = economyManager.getEcoPlayer(offlinePlayer);
-        if (ecoPlayer == null) {
-            return 0.0;
-        }
         return ecoPlayer.getBalance();
     }
 

@@ -6,7 +6,6 @@ import com.shanebeestudios.bc.config.PlayerConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -39,7 +38,7 @@ public class EconomyManager {
         return createEconomyPlayerAccount(player, START_AMOUNT);
     }
 
-    @Nullable
+    @NotNull
     public EconomyPlayer getEcoPlayer(OfflinePlayer player) {
         if (hasAccount(player)) {
             return ECONOMY_PLAYERS.get(player.getUniqueId());
