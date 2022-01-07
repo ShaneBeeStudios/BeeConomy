@@ -47,18 +47,18 @@ public class EcoBalTopCommand extends EcoBaseCmd {
             SORTED_PLAYERS = new ArrayList<>();
             EconomyManager ecoManager = PLUGIN.getEcoManager();
             Collection<EconomyPlayer> allEcoPlayers = ecoManager.getAllEcoPlayers();
-            Map<String, Double> testMap = new HashMap<>();
+            Map<String, Double> ecoPlayerBalMap = new HashMap<>();
             allEcoPlayers.forEach(economyPlayer -> {
                 String name = economyPlayer.getBukkitPlayer().getName();
                 if (name == null) {
                     name = economyPlayer.getUuid().toString().substring(0, 10);
                 }
-                testMap.put(name, economyPlayer.getBalance());
+                ecoPlayerBalMap.put(name, economyPlayer.getBalance());
             });
             // Sort on another thread to prevent overloading server
             int finalPage = page;
             SCHEDULER.runTaskAsynchronously(PLUGIN, () -> {
-                sortBalances(testMap, SORTED_BALANCES, SORTED_PLAYERS);
+                sortBalances(ecoPlayerBalMap, SORTED_BALANCES, SORTED_PLAYERS);
                 TIME = DTF.format(LocalDateTime.now());
 
                 // Send messages back on main thread
