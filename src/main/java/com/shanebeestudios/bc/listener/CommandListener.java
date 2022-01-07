@@ -18,26 +18,16 @@ import java.util.List;
 public class CommandListener implements TabExecutor {
 
     private final List<EcoBaseCmd> COMMANDS = new ArrayList<>();
-    private final String COMMANDS_STRING;
 
     public CommandListener(List<Class<? extends EcoBaseCmd>> commands) {
-        StringBuilder builder = new StringBuilder();
         commands.forEach(cmdClass -> {
             try {
                 EcoBaseCmd ecoBaseCmd = cmdClass.newInstance();
-                String cmdName = ecoBaseCmd.getName();
-                String alias = ecoBaseCmd.getAlias();
                 COMMANDS.add(ecoBaseCmd);
-                builder.append("&b").append(cmdName);
-                if (alias != null) {
-                    builder.append("&7(&b").append(alias).append("&7)");
-                }
-                builder.append("&7, ");
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         });
-        COMMANDS_STRING = builder.substring(0, builder.length() - 2);
     }
 
     @Override
@@ -52,12 +42,23 @@ public class CommandListener implements TabExecutor {
             if (command != null) {
                 if (sender instanceof Player && !command.hasPermission(sender)) {
                     Message.NO_PERMISSION.sendMessage(sender);
+                    return true;
                 }
                 command.processCmd(sender, args);
                 return true;
             }
         }
-        Message.UNKNOWN_COMMAND.sendMessage(sender, COMMANDS_STRING);
+        StringBuilder builder = new StringBuilder();
+        COMMANDS.forEach(c -> {
+            if (c.hasPermission(sender)) {
+                builder.append("&b").append(c.getName());
+                if (c.getAlias() != null) {
+                    builder.append("&7(&b").append(c.getAlias()).append("&7)");
+                }
+                builder.append("&7, ");
+            }
+        });
+        Message.UNKNOWN_COMMAND.sendMessage(sender, builder.toString());
         return true;
     }
 
