@@ -24,15 +24,18 @@ public class Message {
     public static final Message CMD_REM_NOT_ENOUGH = get("&b%s &7does not have enough money in their account, they currently have &b%s%.2f");
     public static final Message CMD_REM_SUCCESS = get("&b%s%.2f &7has been remove from the account of &b%s&7, bring their balance down to &b%s%.2f");
     public static final Message CMD_SET_SUCCESS = get("&7Balance of &b%s &7was set to &b%s%.2f");
+    public static final Message CMD_BAL_TOP_HEADER = get("&7Top Balances [&6%s&7]");
+    public static final Message CMD_BAL_TOP_PAGE = get("&7Page &b%s&7/&b%s");
+    public static final Message CMD_BAL_TOP_BALANCE = get("&7[&a%s&7] Player: &b%s&r, &7Balance: &6%s&b%.2f");
 
     // Config Messages
-    public static final Message PLAYER_CONFIG_LOADED = get("%s players have been &aloaded!");
+    public static final Message PLAYER_CONFIG_LOADED = get("%s players have been &aloaded &7in &b%s&7ms!");
     public static final Message PLAYER_CONFIG_NO_PLAYERS = get("No players found!");
 
     // Logging Messages
     public static final Message VAULT_HOOK_SUCCESS = get("Vault hook is &asuccessful");
     public static final Message VAULT_HOOK_FAILURE = get("Could not hook into vault, plugin disabling");
-    public static final Message PLUGIN_LOAD_SUCCESS = get("BeeConomy successfully &aloaded!");
+    public static final Message PLUGIN_LOAD_SUCCESS = get("BeeConomy successfully &aloaded &7in &b%s&7ms");
 
     private static Message get(String message) {
         return new Message(message);
@@ -46,6 +49,10 @@ public class Message {
 
     public void sendMessage(CommandSender sender, Object... objects) {
         Util.sendColMsg(sender, message, objects);
+    }
+
+    public void sendMessageNoPrx(CommandSender sender, Object... objects) {
+        Util.sendColMsgNoPre(sender, message, objects);
     }
 
     public void log(Object... objects) {

@@ -2,6 +2,7 @@ package com.shanebeestudios.bc;
 
 import com.shanebeestudios.bc.command.EcoAddCmd;
 import com.shanebeestudios.bc.command.EcoBalCmd;
+import com.shanebeestudios.bc.command.EcoBalTopCommand;
 import com.shanebeestudios.bc.command.EcoBaseCmd;
 import com.shanebeestudios.bc.command.EcoPayCmd;
 import com.shanebeestudios.bc.command.EcoRemoveCmd;
@@ -33,11 +34,8 @@ public class BeeConomy extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        long start = System.currentTimeMillis();
         instance = this;
-
-        this.config = new Config(this);
-        this.ecoManager = new EconomyManager(this);
-        this.playerConfig = new PlayerConfig(this);
 
         if (registerEconomy()) {
             Message.VAULT_HOOK_SUCCESS.log();
@@ -46,8 +44,12 @@ public class BeeConomy extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
         }
 
+        this.config = new Config(this);
+        this.ecoManager = new EconomyManager(this);
+        this.playerConfig = new PlayerConfig(this);
+
         registerCommands();
-        Message.PLUGIN_LOAD_SUCCESS.log();
+        Message.PLUGIN_LOAD_SUCCESS.log(System.currentTimeMillis() - start);
     }
 
     @Override
@@ -65,6 +67,7 @@ public class BeeConomy extends JavaPlugin {
         List<Class<? extends EcoBaseCmd>> commands = new ArrayList<>();
         commands.add(EcoAddCmd.class);
         commands.add(EcoBalCmd.class);
+        commands.add(EcoBalTopCommand.class);
         commands.add(EcoPayCmd.class);
         commands.add(EcoRemoveCmd.class);
         commands.add(EcoSetCmd.class);

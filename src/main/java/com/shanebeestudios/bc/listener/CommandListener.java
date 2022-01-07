@@ -90,6 +90,11 @@ public class CommandListener implements TabExecutor {
                     } else {
                         return null;
                     }
+                case "baltop":
+                case "balancetop":
+                    if (args.length == 2 && sender.hasPermission("eco.command.balancetop.pages")) {
+                        return Collections.singletonList("<page>");
+                    }
             }
         }
         return ImmutableList.of();

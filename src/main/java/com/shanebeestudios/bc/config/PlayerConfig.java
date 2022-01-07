@@ -30,6 +30,7 @@ public class PlayerConfig {
     }
 
     public void loadAllPlayers() {
+        long start = System.currentTimeMillis();
         this.configFile = new File(plugin.getDataFolder(), "balances.yml");
         if (!configFile.exists()) {
             plugin.saveResource("balances.yml", false);
@@ -50,7 +51,7 @@ public class PlayerConfig {
             economyManager.createEconomyPlayerAccount(offlinePlayer, balance);
             amount++;
         }
-        Message.PLAYER_CONFIG_LOADED.log(amount);
+        Message.PLAYER_CONFIG_LOADED.log(amount, (System.currentTimeMillis() - start));
     }
 
     public void saveAllPlayers() {
