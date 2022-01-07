@@ -41,6 +41,8 @@ public class EconomyManager {
     public EconomyPlayer getEcoPlayer(OfflinePlayer player) {
         if (hasAccount(player)) {
             return ECONOMY_PLAYERS.get(player.getUniqueId());
+        } else if (player.isOnline()) {
+            return createEconomyPlayerAccount(player);
         }
         return null;
     }
