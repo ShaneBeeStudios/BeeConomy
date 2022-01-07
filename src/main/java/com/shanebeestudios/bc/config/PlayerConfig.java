@@ -49,7 +49,7 @@ public class PlayerConfig {
             economyManager.createEconomyPlayerAccount(offlinePlayer, balance);
             amount++;
         }
-        Util.log("" + amount + " players have been &aloaded!");
+        Util.log("%s players have been &aloaded!", amount);
     }
 
     public void saveAllPlayers() {

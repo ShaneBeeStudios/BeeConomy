@@ -40,6 +40,10 @@ public class Util {
         Bukkit.getConsoleSender().sendMessage(getColString(CONSOLE_PREFIX + log));
     }
 
+    public static void log(String format, Object... objects) {
+        log(String.format(format, objects));
+    }
+
     public static void warn(String warn) {
         log("&e" + warn);
     }
