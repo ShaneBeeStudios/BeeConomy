@@ -3,6 +3,7 @@ package com.shanebeestudios.bc.eco;
 import com.shanebeestudios.bc.BeeConomy;
 import com.shanebeestudios.bc.config.Config;
 import com.shanebeestudios.bc.config.PlayerConfig;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +22,7 @@ public class EconomyManager {
     public EconomyManager(BeeConomy plugin) {
         this.plugin = plugin;
         this.START_AMOUNT = Config.ECO_STARTING_AMOUNT;
+        startConfigTimer();
     }
 
     public boolean hasAccount(OfflinePlayer player) {
@@ -56,6 +58,10 @@ public class EconomyManager {
         if (playerConfig != null) {
             playerConfig.saveAllPlayers();
         }
+    }
+
+    private void startConfigTimer() {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::saveAllPlayers, 6000, 6000);
     }
 
 }
