@@ -64,6 +64,14 @@ public class Util {
         sendColMsg(sender, String.format(formatMsg, objects));
     }
 
+    public static void sendColMsgNoPre(CommandSender sender, String message) {
+        sender.sendMessage(Util.getColString(message));
+    }
+
+    public static void sendColMsgNoPre(CommandSender sender, String formatMsg, Object... objects) {
+        sendColMsgNoPre(sender, String.format(formatMsg, objects));
+    }
+
     /**
      * Check if server is running a minimum Minecraft version
      *
