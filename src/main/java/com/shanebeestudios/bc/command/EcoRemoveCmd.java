@@ -3,7 +3,6 @@ package com.shanebeestudios.bc.command;
 import com.shanebeestudios.bc.config.Config;
 import com.shanebeestudios.bc.eco.EconomyPlayer;
 import com.shanebeestudios.bc.util.Message;
-import com.shanebeestudios.bc.util.Util;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -11,7 +10,7 @@ import org.bukkit.OfflinePlayer;
 public class EcoRemoveCmd extends EcoBaseCmd {
 
     public EcoRemoveCmd() {
-        super("remove", null);
+        super("remove", null, false);
         this.usage = "remove <player> <amount>";
     }
 

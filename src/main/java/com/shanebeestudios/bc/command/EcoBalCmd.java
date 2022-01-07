@@ -3,7 +3,6 @@ package com.shanebeestudios.bc.command;
 import com.shanebeestudios.bc.config.Config;
 import com.shanebeestudios.bc.eco.EconomyPlayer;
 import com.shanebeestudios.bc.util.Message;
-import com.shanebeestudios.bc.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -11,8 +10,9 @@ import org.bukkit.entity.Player;
 public class EcoBalCmd extends EcoBaseCmd {
 
     public EcoBalCmd() {
-        super("balance", "bal");
+        super("balance", "bal", true);
         this.usage = "balance";
+        setDefaultPerm("balance.other", false);
     }
 
     @Override

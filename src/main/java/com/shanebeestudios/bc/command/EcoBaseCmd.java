@@ -3,10 +3,10 @@ package com.shanebeestudios.bc.command;
 import com.shanebeestudios.bc.BeeConomy;
 import com.shanebeestudios.bc.eco.EconomyManager;
 import com.shanebeestudios.bc.util.Message;
-import com.shanebeestudios.bc.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.PluginManager;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 public abstract class EcoBaseCmd {
 
@@ -18,11 +18,12 @@ public abstract class EcoBaseCmd {
     String[] args;
     String usage = "";
 
-    public EcoBaseCmd(String cmdName, String cmdAlias) {
+    public EcoBaseCmd(String cmdName, String cmdAlias, boolean defaultPerm) {
         this.cmdName = cmdName;
         this.cmdAlias = cmdAlias;
         this.plugin = BeeConomy.getInstance();
         this.economyManager = plugin.getEcoManager();
+        setDefaultPerm(cmdName, defaultPerm);
     }
 
     public void processCmd(CommandSender sender, String[] args) {
@@ -54,6 +55,12 @@ public abstract class EcoBaseCmd {
 
     public boolean hasPermission(CommandSender sender) {
         return sender.hasPermission("eco.command." + cmdName);
+    }
+
+    void setDefaultPerm(String permSuffix, boolean defaultPerm) {
+        Permission permission = new Permission("eco.command." + permSuffix);
+        Bukkit.getPluginManager().addPermission(permission);
+        permission.setDefault(defaultPerm ? PermissionDefault.TRUE : PermissionDefault.OP);
     }
 
 }

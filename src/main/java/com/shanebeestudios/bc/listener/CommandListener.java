@@ -3,7 +3,6 @@ package com.shanebeestudios.bc.listener;
 import com.google.common.collect.ImmutableList;
 import com.shanebeestudios.bc.command.EcoBaseCmd;
 import com.shanebeestudios.bc.util.Message;
-import com.shanebeestudios.bc.util.Util;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -19,7 +18,6 @@ import java.util.List;
 public class CommandListener implements TabExecutor {
 
     private final List<EcoBaseCmd> COMMANDS = new ArrayList<>();
-    private final List<String> COMMAND_NAMES = new ArrayList<>();
     private final String COMMANDS_STRING;
 
     public CommandListener(List<Class<? extends EcoBaseCmd>> commands) {
@@ -30,10 +28,8 @@ public class CommandListener implements TabExecutor {
                 String cmdName = ecoBaseCmd.getName();
                 String alias = ecoBaseCmd.getAlias();
                 COMMANDS.add(ecoBaseCmd);
-                COMMAND_NAMES.add(cmdName);
                 builder.append("&b").append(cmdName);
                 if (alias != null) {
-                    COMMAND_NAMES.add(alias);
                     builder.append("&7(&b").append(alias).append("&7)");
                 }
                 builder.append("&7, ");
@@ -69,7 +65,8 @@ public class CommandListener implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], COMMAND_NAMES, new ArrayList<>());
+            List<String> commandsWithPerm = getCommandsWithPerm(sender);
+            return StringUtil.copyPartialMatches(args[0], commandsWithPerm, new ArrayList<>());
         }
         if (args.length >= 2) {
             String arg = args[0];
@@ -87,7 +84,7 @@ public class CommandListener implements TabExecutor {
                     }
                 case "bal":
                 case "balance":
-                    if (args.length > 2) {
+                    if (args.length > 2 || !sender.hasPermission("eco.command.balance.other")) {
                         return ImmutableList.of();
                     } else {
                         return null;
@@ -95,6 +92,16 @@ public class CommandListener implements TabExecutor {
             }
         }
         return ImmutableList.of();
+    }
+
+    private List<String> getCommandsWithPerm(CommandSender sender) {
+        List<String> commands = new ArrayList<>();
+        COMMANDS.forEach(baseCmd -> {
+            if (baseCmd.hasPermission(sender)) {
+                commands.add(baseCmd.getName());
+            }
+        });
+        return commands;
     }
 
 }
