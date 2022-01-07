@@ -2,6 +2,7 @@ package com.shanebeestudios.bc.listener;
 
 import com.google.common.collect.ImmutableList;
 import com.shanebeestudios.bc.command.EcoBaseCmd;
+import com.shanebeestudios.bc.util.Message;
 import com.shanebeestudios.bc.util.Util;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -54,13 +55,13 @@ public class CommandListener implements TabExecutor {
             }
             if (command != null) {
                 if (sender instanceof Player && !command.hasPermission(sender)) {
-                    Util.sendColMsg(sender, "&cYou do not have permission to use this command.");
+                    Message.NO_PERMISSION.sendMessage(sender);
                 }
                 command.processCmd(sender, args);
                 return true;
             }
         }
-        Util.sendColMsg(sender, "&cUnknown command. &7Options: &b" + COMMANDS_STRING);
+        Message.UNKNOWN_COMMAND.sendMessage(sender, COMMANDS_STRING);
         return true;
     }
 

@@ -2,6 +2,7 @@ package com.shanebeestudios.bc.command;
 
 import com.shanebeestudios.bc.config.Config;
 import com.shanebeestudios.bc.eco.EconomyPlayer;
+import com.shanebeestudios.bc.util.Message;
 import com.shanebeestudios.bc.util.Util;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
@@ -19,14 +20,14 @@ public class EcoPayCmd extends EcoBaseCmd {
     public boolean run() {
         if (args.length == 2) {
             if (!(sender instanceof Player)) {
-                Util.sendColMsg(sender, "&cConsole can not pay players");
+                Message.CMD_PAY_NO_CONSOLE.sendMessage(sender);
                 return true;
             }
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
             if (NumberUtils.isNumber(args[1])) {
                 double amount = Double.parseDouble(args[1]);
                 if (amount < 0) {
-                    Util.sendColMsg(sender, "&cYou can not send an amount less than &b%s0.00", Config.ECO_SYMBOL);
+                    Message.CMD_PAY_BELOW_ZERO.sendMessage(sender, Config.ECO_SYMBOL);
                     return true;
                 }
                 EconomyPlayer ecoReceiver = economyManager.getEcoPlayer(offlinePlayer);
@@ -34,19 +35,18 @@ public class EcoPayCmd extends EcoBaseCmd {
                 if (ecoReceiver != null) {
                     assert ecoSender != null;
                     if (ecoSender == ecoReceiver) {
-                        Util.sendColMsg(sender, "&cYou can not pay yourself!");
+                        Message.CMD_PAY_NOT_SELF.sendMessage(sender);
                         return true;
                     }
                     if (ecoSender.getBalance() < amount) {
-                        Util.sendColMsg(sender, "&cYou do not have enough %s to send.", Config.ECO_NAME);
+                        Message.CMD_PAY_NOT_ENOUGH.sendMessage(sender, Config.ECO_NAME);
                         return true;
                     }
                     ecoReceiver.deposit(amount);
                     ecoSender.withdraw(amount);
-                    Util.sendColMsg(sender, "&b%s%.2f &7has been added to the account of &b%s&7, bring their balance up to &b%s%.2f",
-                            Config.ECO_SYMBOL, amount, offlinePlayer.getName(), Config.ECO_SYMBOL, ecoReceiver.getBalance());
+                    Message.CMD_PAY_SUCCESS.sendMessage(sender, Config.ECO_SYMBOL, amount, offlinePlayer.getName(), Config.ECO_SYMBOL, ecoReceiver.getBalance());
                 } else {
-                    Util.sendColMsg(sender, "&b%s&c does not have an account.", offlinePlayer.getName());
+                    Message.NO_ACCOUNT.sendMessage(sender, offlinePlayer.getName());
                 }
                 return true;
             }

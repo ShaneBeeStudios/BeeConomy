@@ -2,6 +2,7 @@ package com.shanebeestudios.bc.command;
 
 import com.shanebeestudios.bc.config.Config;
 import com.shanebeestudios.bc.eco.EconomyPlayer;
+import com.shanebeestudios.bc.util.Message;
 import com.shanebeestudios.bc.util.Util;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
@@ -23,10 +24,9 @@ public class EcoSetCmd extends EcoBaseCmd {
                 EconomyPlayer economyPlayer = economyManager.getEcoPlayer(offlinePlayer);
                 if (economyPlayer != null) {
                     economyPlayer.setBalance(amount);
-                    Util.sendColMsg(sender, "&7Balance of &b%s &7was set to &b%s%.2f",
-                            offlinePlayer.getName(), Config.ECO_SYMBOL, amount);
+                    Message.CMD_SET_SUCCESS.sendMessage(sender, offlinePlayer.getName(), Config.ECO_SYMBOL, amount);
                 } else {
-                    Util.sendColMsg(sender, "&b%s&c does not have an account.", offlinePlayer.getName());
+                    Message.NO_ACCOUNT.sendMessage(sender, offlinePlayer.getName());
                 }
                 return true;
             }

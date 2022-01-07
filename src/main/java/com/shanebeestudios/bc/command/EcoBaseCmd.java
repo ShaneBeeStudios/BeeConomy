@@ -2,8 +2,11 @@ package com.shanebeestudios.bc.command;
 
 import com.shanebeestudios.bc.BeeConomy;
 import com.shanebeestudios.bc.eco.EconomyManager;
+import com.shanebeestudios.bc.util.Message;
 import com.shanebeestudios.bc.util.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.PluginManager;
 
 public abstract class EcoBaseCmd {
 
@@ -31,7 +34,7 @@ public abstract class EcoBaseCmd {
         }
 
         if (!run()) {
-            Util.sendColMsg(sender, "&6Correct Usage: &b/eco " + usage);
+            Message.CMD_CORRECT_USAGE.sendMessage(sender, usage);
         }
     }
 

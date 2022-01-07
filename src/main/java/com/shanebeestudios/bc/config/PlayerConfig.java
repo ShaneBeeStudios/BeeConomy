@@ -3,6 +3,7 @@ package com.shanebeestudios.bc.config;
 import com.shanebeestudios.bc.BeeConomy;
 import com.shanebeestudios.bc.eco.EconomyManager;
 import com.shanebeestudios.bc.eco.EconomyPlayer;
+import com.shanebeestudios.bc.util.Message;
 import com.shanebeestudios.bc.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -36,7 +37,7 @@ public class PlayerConfig {
         config = YamlConfiguration.loadConfiguration(configFile);
         ConfigurationSection section = config.getConfigurationSection("players");
         if (section == null) {
-            Util.log("No players found!");
+            Message.PLAYER_CONFIG_NO_PLAYERS.log();
             return;
         }
         int amount = 0;
@@ -49,7 +50,7 @@ public class PlayerConfig {
             economyManager.createEconomyPlayerAccount(offlinePlayer, balance);
             amount++;
         }
-        Util.log("%s players have been &aloaded!", amount);
+        Message.PLAYER_CONFIG_LOADED.log(amount);
     }
 
     public void saveAllPlayers() {

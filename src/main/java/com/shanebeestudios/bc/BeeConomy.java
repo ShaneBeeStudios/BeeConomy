@@ -11,7 +11,7 @@ import com.shanebeestudios.bc.config.PlayerConfig;
 import com.shanebeestudios.bc.eco.CustomEconomy;
 import com.shanebeestudios.bc.eco.EconomyManager;
 import com.shanebeestudios.bc.listener.CommandListener;
-import com.shanebeestudios.bc.util.Util;
+import com.shanebeestudios.bc.util.Message;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -40,15 +40,14 @@ public class BeeConomy extends JavaPlugin {
         this.playerConfig = new PlayerConfig(this);
 
         if (registerEconomy()) {
-            Util.log("Vault hook is &asuccessful");
+            Message.VAULT_HOOK_SUCCESS.log();
         } else {
-            Util.error("Could not hook into vault, plugin disabling");
+            Message.VAULT_HOOK_FAILURE.log();
             Bukkit.getPluginManager().disablePlugin(this);
         }
 
         registerCommands();
-
-        Util.log("BeeConomy successfully &aloaded!");
+        Message.PLUGIN_LOAD_SUCCESS.log();
     }
 
     @Override
