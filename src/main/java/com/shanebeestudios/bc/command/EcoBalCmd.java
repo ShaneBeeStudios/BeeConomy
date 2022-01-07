@@ -19,6 +19,10 @@ public class EcoBalCmd extends EcoBaseCmd {
     public boolean run() {
         OfflinePlayer offlinePlayer;
         if (args.length == 1) {
+            if (!sender.hasPermission("eco.command.balance.other")) {
+                Message.CMD_BAL_NO_PERM_OTHER.sendMessage(sender);
+                return true;
+            }
             offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
         } else if (sender instanceof Player) {
             offlinePlayer = ((Player) sender);
