@@ -49,7 +49,7 @@ public class EcoBalTopCommand extends EcoBaseCmd {
             Collection<EconomyPlayer> allEcoPlayers = ecoManager.getAllEcoPlayers();
             Map<String, Double> ecoPlayerBalMap = new HashMap<>();
             allEcoPlayers.forEach(economyPlayer -> {
-                String name = economyPlayer.getBukkitPlayer().getName();
+                String name = economyPlayer.getName();
                 if (name == null) {
                     name = economyPlayer.getUuid().toString().substring(0, 10);
                 }

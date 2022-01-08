@@ -10,6 +10,7 @@ public class EconomyPlayer {
 
     private final UUID uuid;
     private double balance;
+    private String name;
 
     public EconomyPlayer(UUID uuid, double balance) {
         this.uuid = uuid;
@@ -28,6 +29,13 @@ public class EconomyPlayer {
     public boolean isOnline() {
         OfflinePlayer player = getBukkitPlayer();
         return player.isOnline();
+    }
+
+    public String getName() {
+        if (name == null) {
+            name = getBukkitPlayer().getName();
+        }
+        return name;
     }
 
     /**

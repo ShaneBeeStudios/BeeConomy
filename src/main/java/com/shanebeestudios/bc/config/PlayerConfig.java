@@ -4,7 +4,6 @@ import com.shanebeestudios.bc.BeeConomy;
 import com.shanebeestudios.bc.eco.EconomyManager;
 import com.shanebeestudios.bc.eco.EconomyPlayer;
 import com.shanebeestudios.bc.util.Message;
-import com.shanebeestudios.bc.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -64,7 +63,7 @@ public class PlayerConfig {
     public void savePlayer(@NotNull EconomyPlayer economyPlayer) {
         String path = "players." + economyPlayer.getUuid() + ".";
         config.set(path + "balance", economyPlayer.getBalance());
-        config.set(path + "name", economyPlayer.getBukkitPlayer().getName());
+        config.set(path + "name", economyPlayer.getName());
     }
 
     public void saveFile() {
