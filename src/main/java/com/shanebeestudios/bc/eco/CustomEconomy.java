@@ -90,6 +90,9 @@ public class CustomEconomy extends AbstractEconomy {
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
         EconomyPlayer ecoPlayer = economyManager.getEcoPlayer(offlinePlayer);
+        if (ecoPlayer == null) {
+            return 0;
+        }
         return ecoPlayer.getBalance();
     }
 

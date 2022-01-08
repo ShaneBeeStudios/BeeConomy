@@ -6,6 +6,7 @@ import com.shanebeestudios.bc.config.PlayerConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,12 +39,21 @@ public class EconomyManager {
         return createEconomyPlayerAccount(player, START_AMOUNT);
     }
 
-    @NotNull
+    /**
+     * Will return an {@link EconomyPlayer} if an account is created,
+     * or will create a new account if the player is online, otherwise null.
+     *
+     * @param player Player to check for account
+     * @return account if already created, or if player is online will return a new account, otherwise null.
+     */
+    @Nullable
     public EconomyPlayer getEcoPlayer(OfflinePlayer player) {
         if (hasAccount(player)) {
             return ECONOMY_PLAYERS.get(player.getUniqueId());
+        } else if (player.isOnline()) {
+            return createEconomyPlayerAccount(player);
         }
-        return createEconomyPlayerAccount(player);
+        return null;
     }
 
     public Collection<EconomyPlayer> getAllEcoPlayers() {
