@@ -63,6 +63,11 @@ public class CustomEconomy extends AbstractEconomy {
     @Override
     public boolean hasAccount(String playerName) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        return hasAccount(offlinePlayer);
+    }
+
+    @Override
+    public boolean hasAccount(OfflinePlayer offlinePlayer) {
         return economyManager.hasAccount(offlinePlayer);
     }
 
@@ -72,8 +77,18 @@ public class CustomEconomy extends AbstractEconomy {
     }
 
     @Override
+    public boolean hasAccount(OfflinePlayer offlinePlayer, String worldName) {
+        return hasAccount(offlinePlayer);
+    }
+
+    @Override
     public double getBalance(String playerName) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        return getBalance(offlinePlayer);
+    }
+
+    @Override
+    public double getBalance(OfflinePlayer offlinePlayer) {
         EconomyPlayer ecoPlayer = economyManager.getEcoPlayer(offlinePlayer);
         return ecoPlayer.getBalance();
     }
@@ -84,8 +99,18 @@ public class CustomEconomy extends AbstractEconomy {
     }
 
     @Override
+    public double getBalance(OfflinePlayer offlinePlayer, String world) {
+        return getBalance(offlinePlayer);
+    }
+
+    @Override
     public boolean has(String playerName, double amount) {
         return getBalance(playerName) > amount;
+    }
+
+    @Override
+    public boolean has(OfflinePlayer offlinePlayer, double amount) {
+        return getBalance(offlinePlayer) > amount;
     }
 
     @Override
@@ -94,10 +119,22 @@ public class CustomEconomy extends AbstractEconomy {
     }
 
     @Override
+    public boolean has(OfflinePlayer offlinePlayer, String worldName, double amount) {
+        return has(offlinePlayer, amount);
+    }
+
+    @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
-        double balance = getBalance(playerName);
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        return withdrawPlayer(offlinePlayer, amount);
+    }
+
+    @Override
+    public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double amount) {
+        double balance = getBalance(offlinePlayer);
         if (balance > amount) {
-            EconomyPlayer economyPlayer = economyManager.getEcoPlayer(Bukkit.getOfflinePlayer(playerName));
+            EconomyPlayer economyPlayer = economyManager.getEcoPlayer(offlinePlayer);
+            // Leaving this here as we may come back to deal with this later
             if (economyPlayer == null) {
                 return new EconomyResponse(amount, 0, ResponseType.FAILURE, "no account");
             }
@@ -114,8 +151,19 @@ public class CustomEconomy extends AbstractEconomy {
     }
 
     @Override
+    public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, String worldName, double amount) {
+        return withdrawPlayer(offlinePlayer, amount);
+    }
+
+    @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        EconomyPlayer economyPlayer = economyManager.getEcoPlayer(Bukkit.getOfflinePlayer(playerName));
+        return depositPlayer(Bukkit.getOfflinePlayer(playerName), amount);
+    }
+
+    @Override
+    public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double amount) {
+        EconomyPlayer economyPlayer = economyManager.getEcoPlayer(offlinePlayer);
+        // Leaving this here as we may come back to deal with this later
         if (economyPlayer == null) {
             return new EconomyResponse(amount, 0, ResponseType.FAILURE, "no account");
         }
@@ -126,6 +174,11 @@ public class CustomEconomy extends AbstractEconomy {
     @Override
     public EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
         return depositPlayer(playerName, amount);
+    }
+
+    @Override
+    public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, String worldName, double amount) {
+        return depositPlayer(offlinePlayer, amount);
     }
 
     @Override
@@ -176,6 +229,11 @@ public class CustomEconomy extends AbstractEconomy {
     @Override
     public boolean createPlayerAccount(String playerName) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        return createPlayerAccount(offlinePlayer);
+    }
+
+    @Override
+    public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
         EconomyPlayer economyPlayer = economyManager.createEconomyPlayerAccount(offlinePlayer);
         return economyPlayer != null;
     }
@@ -185,4 +243,8 @@ public class CustomEconomy extends AbstractEconomy {
         return createPlayerAccount(playerName);
     }
 
+    @Override
+    public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String worldName) {
+        return createPlayerAccount(offlinePlayer);
+    }
 }
