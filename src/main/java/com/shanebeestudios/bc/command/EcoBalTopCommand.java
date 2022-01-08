@@ -95,12 +95,16 @@ public class EcoBalTopCommand extends EcoBaseCmd {
 
     private void sendBalances(int page) {
         Message.CMD_BAL_TOP_HEADER.sendMessage(sender, TIME);
-        int totalPages = (int) Math.ceil((double) SORTED_PLAYERS.size() / 10);
+        int totalPlayers = SORTED_PLAYERS.size();
+        if (totalPlayers == 0) {
+            return;
+        }
+        int totalPages = (int) Math.ceil((double) totalPlayers / 10);
         if (page > totalPages) {
             page = totalPages;
         }
         Message.CMD_BAL_TOP_PAGE.sendMessageNoPrx(sender, page, totalPages);
-        int size = Math.min(SORTED_PLAYERS.size(), (page * 10));
+        int size = Math.min(totalPlayers, (page * 10));
         for (int i = (page * 10) - 10; i < size; i++) {
             Message.CMD_BAL_TOP_BALANCE.sendMessageNoPrx(sender, i + 1, SORTED_PLAYERS.get(i), Config.ECO_SYMBOL, SORTED_BALANCES.get(i));
         }
