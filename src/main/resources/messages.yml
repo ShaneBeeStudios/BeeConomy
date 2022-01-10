@@ -1,0 +1,43 @@
+# Message File
+
+# Change up the messages however you'd like
+# Hex colors are supported in MC 1.16+ (ex: "<#123456>blah blah")
+# Replacements:
+# <string> -> will be replace by some string for the message
+# <player> -> will be replaced by a player name
+# <number> -> will be replaced by a number
+# <money> -> will be replaced by money formatted with 2 decimal points
+# <currency> -> will be replaced by the currency name found in config.yml (ex: "money")
+# <currency-symbol> will be replaced by the currency symbol found in config.yml (ex: "$")
+
+# General Messages
+unknown-command: "&cUnknown command. &7Options: &b<string>"
+no-permission: "&cYou do not have permission to use this command."
+cmd-correct-usage: "&6Correct Usage: &b/eco <string>"
+no-account: "&b<player>&c does not have an account."
+
+# Command Messages
+cmd-add-success: "&b<currency-symbol><money> &7has been added to the account of &b<player>&7, bringing their balance up to &b<currency-symbol><money>"
+cmd-bal-no-perm-other: "&cYou do not have permission to check another player's balance!"
+cmd-bal-no-console: "&cSilly console you don't have any <currency>"
+cmd-bal-balance: "&7Your balance is &b<currency-symbol><money>"
+cmd-bal-balance-other: "&7Balance of &b<player> &7is &b<currency-symbol><money>"
+cmd-pay-no-console: "&cConsole can not pay players"
+cmd-pay-below-zero: "&cYou can not send an amount less than &b<currency-symbol>0.00"
+cmd-pay-not-self: "&cYou can not pay yourself!"
+cmd-pay-not-enough: "&cYou do not have enough <currency> to send."
+cmd-pay-success: "&b<currency-symbol><money> &7has been added to the account of &b<player>&7, bringing their balance up to <currency-symbol><money>"
+cmd-rem-not-enough: "&b<player> &7does not have enough money in their account, they currently have &b<currency-symbol><money>"
+cmd-rem-success: "&b<currency-symbol><money> &7has been removed from the account of &b<player>&7, bringing their balance down to &b<currency-symbol><money>"
+cmd-set-success: "&7Balance of &b<player> &7was set to &b<currency-symbol><money>"
+cmd-bal-top-header: "&7Top Balances [&6<string>&7]"
+cmd-bal-top-page: "&7Page &b<number>&7/&b<number>"
+cmd-bal-top-balance: "&7[&a<number>&7] Player: &b<string>&r, &7Balance: &6<currency-symbol><money>"
+
+# Plugin Messages
+# Do not use hex colors here as these messages are only sent to console
+player-config-loaded: "<number> players have been &aloaded &7in &b<number>&7ms!"
+player-config-no-players: "No players found!"
+vault-hook-success: "Vault hook is &asuccessful"
+vault-hook-failure: "Could not hook into vault, plugin disabling"
+plugin-load-success: "BeeConomy successfully &aloaded &7in &b<number>&7ms"

@@ -58,7 +58,7 @@ public class CommandListener implements TabExecutor {
                 builder.append("&7, ");
             }
         });
-        Message.UNKNOWN_COMMAND.sendMessage(sender, builder.toString());
+        Message.UNKNOWN_COMMAND.replaceString(builder.toString()).sendMessage(sender);
         return true;
     }
 

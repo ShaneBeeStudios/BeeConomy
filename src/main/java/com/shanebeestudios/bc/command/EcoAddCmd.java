@@ -1,6 +1,5 @@
 package com.shanebeestudios.bc.command;
 
-import com.shanebeestudios.bc.config.Config;
 import com.shanebeestudios.bc.eco.EconomyPlayer;
 import com.shanebeestudios.bc.util.Message;
 import org.apache.commons.lang.math.NumberUtils;
@@ -23,9 +22,13 @@ public class EcoAddCmd extends EcoBaseCmd {
                 EconomyPlayer economyPlayer = economyManager.getEcoPlayer(offlinePlayer);
                 if (economyPlayer != null) {
                     economyPlayer.deposit(amount);
-                    Message.CMD_ADD_SUCCESS.sendMessage(sender, Config.ECO_SYMBOL, amount, offlinePlayer.getName(), Config.ECO_SYMBOL, economyPlayer.getBalance());
+                    Message.CMD_ADD_SUCCESS
+                            .replaceMoney(amount)
+                            .replacePlayer(offlinePlayer)
+                            .replaceMoney(economyPlayer.getBalance())
+                            .sendMessage(sender);
                 } else {
-                    Message.NO_ACCOUNT.sendMessage(sender, offlinePlayer.getName());
+                    Message.NO_ACCOUNT.replacePlayer(offlinePlayer).sendMessage(sender);
                 }
                 return true;
             }

@@ -35,7 +35,7 @@ public abstract class EcoBaseCmd {
         }
 
         if (!run()) {
-            Message.CMD_CORRECT_USAGE.sendMessage(sender, usage);
+            Message.CMD_CORRECT_USAGE.replaceString(usage).sendMessage(sender);
         }
     }
 

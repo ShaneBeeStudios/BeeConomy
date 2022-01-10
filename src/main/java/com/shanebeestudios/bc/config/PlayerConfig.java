@@ -50,7 +50,10 @@ public class PlayerConfig {
             economyManager.createEconomyPlayerAccount(offlinePlayer, balance);
             amount++;
         }
-        Message.PLAYER_CONFIG_LOADED.log(amount, (System.currentTimeMillis() - start));
+        Message.PLAYER_CONFIG_LOADED
+                .replaceNumber(amount)
+                .replaceNumber((System.currentTimeMillis() - start))
+                .log();
     }
 
     public void saveAllPlayers() {

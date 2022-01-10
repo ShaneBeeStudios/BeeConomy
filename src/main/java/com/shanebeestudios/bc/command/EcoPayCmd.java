@@ -1,6 +1,5 @@
 package com.shanebeestudios.bc.command;
 
-import com.shanebeestudios.bc.config.Config;
 import com.shanebeestudios.bc.eco.EconomyPlayer;
 import com.shanebeestudios.bc.util.Message;
 import org.apache.commons.lang.math.NumberUtils;
@@ -26,7 +25,7 @@ public class EcoPayCmd extends EcoBaseCmd {
             if (NumberUtils.isNumber(args[1])) {
                 double amount = Double.parseDouble(args[1]);
                 if (amount < 0) {
-                    Message.CMD_PAY_BELOW_ZERO.sendMessage(sender, Config.ECO_SYMBOL);
+                    Message.CMD_PAY_BELOW_ZERO.sendMessage(sender);
                     return true;
                 }
                 EconomyPlayer ecoReceiver = economyManager.getEcoPlayer(offlinePlayer);
@@ -38,14 +37,18 @@ public class EcoPayCmd extends EcoBaseCmd {
                         return true;
                     }
                     if (ecoSender.getBalance() < amount) {
-                        Message.CMD_PAY_NOT_ENOUGH.sendMessage(sender, Config.ECO_NAME);
+                        Message.CMD_PAY_NOT_ENOUGH.sendMessage(sender);
                         return true;
                     }
                     ecoReceiver.deposit(amount);
                     ecoSender.withdraw(amount);
-                    Message.CMD_PAY_SUCCESS.sendMessage(sender, Config.ECO_SYMBOL, amount, offlinePlayer.getName(), Config.ECO_SYMBOL, ecoReceiver.getBalance());
+                    Message.CMD_PAY_SUCCESS
+                            .replaceMoney(amount)
+                            .replacePlayer(offlinePlayer)
+                            .replaceMoney(ecoReceiver.getBalance())
+                            .sendMessage(sender);
                 } else {
-                    Message.NO_ACCOUNT.sendMessage(sender, offlinePlayer.getName());
+                    Message.NO_ACCOUNT.replacePlayer(offlinePlayer).sendMessage(sender);
                 }
                 return true;
             }

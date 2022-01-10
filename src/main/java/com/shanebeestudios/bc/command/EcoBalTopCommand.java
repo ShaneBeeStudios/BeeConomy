@@ -1,7 +1,6 @@
 package com.shanebeestudios.bc.command;
 
 import com.shanebeestudios.bc.BeeConomy;
-import com.shanebeestudios.bc.config.Config;
 import com.shanebeestudios.bc.eco.EconomyManager;
 import com.shanebeestudios.bc.eco.EconomyPlayer;
 import com.shanebeestudios.bc.util.Message;
@@ -94,7 +93,7 @@ public class EcoBalTopCommand extends EcoBaseCmd {
     }
 
     private void sendBalances(int page) {
-        Message.CMD_BAL_TOP_HEADER.sendMessage(sender, TIME);
+        Message.CMD_BAL_TOP_HEADER.replaceString(TIME).sendMessage(sender);
         int totalPlayers = SORTED_PLAYERS.size();
         if (totalPlayers == 0) {
             return;
@@ -103,10 +102,16 @@ public class EcoBalTopCommand extends EcoBaseCmd {
         if (page > totalPages) {
             page = totalPages;
         }
-        Message.CMD_BAL_TOP_PAGE.sendMessageNoPrx(sender, page, totalPages);
+        Message.CMD_BAL_TOP_PAGE
+                .replaceNumber(page)
+                .replaceNumber(totalPages)
+                .sendMessageNoPrx(sender);
         int size = Math.min(totalPlayers, (page * 10));
         for (int i = (page * 10) - 10; i < size; i++) {
-            Message.CMD_BAL_TOP_BALANCE.sendMessageNoPrx(sender, i + 1, SORTED_PLAYERS.get(i), Config.ECO_SYMBOL, SORTED_BALANCES.get(i));
+            Message.CMD_BAL_TOP_BALANCE.replaceNumber(i + 1)
+                    .replaceString(SORTED_PLAYERS.get(i))
+                    .replaceMoney(SORTED_BALANCES.get(i))
+                    .sendMessageNoPrx(sender);
         }
     }
 

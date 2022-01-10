@@ -8,6 +8,7 @@ import com.shanebeestudios.bc.command.EcoPayCmd;
 import com.shanebeestudios.bc.command.EcoRemoveCmd;
 import com.shanebeestudios.bc.command.EcoSetCmd;
 import com.shanebeestudios.bc.config.Config;
+import com.shanebeestudios.bc.config.MessageConfig;
 import com.shanebeestudios.bc.config.PlayerConfig;
 import com.shanebeestudios.bc.eco.CustomEconomy;
 import com.shanebeestudios.bc.eco.EconomyManager;
@@ -32,26 +33,22 @@ public class BeeConomy extends JavaPlugin {
     private Config config;
     private EconomyManager ecoManager;
     private PlayerConfig playerConfig;
+    private MessageConfig messageConfig;
 
     @Override
     public void onEnable() {
         long start = System.currentTimeMillis();
         instance = this;
 
-        if (registerEconomy()) {
-            Message.VAULT_HOOK_SUCCESS.log();
-        } else {
-            Message.VAULT_HOOK_FAILURE.log();
+        loadConfigs();
+        if (!registerEconomy()) {
             Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
-
-        this.config = new Config(this);
-        this.ecoManager = new EconomyManager(this);
-        this.playerConfig = new PlayerConfig(this);
-
+        loadEconomy();
         registerCommands();
         registerListeners();
-        Message.PLUGIN_LOAD_SUCCESS.log(System.currentTimeMillis() - start);
+        Message.PLUGIN_LOAD_SUCCESS.replaceNumber(System.currentTimeMillis() - start).log();
     }
 
     @Override
@@ -62,6 +59,16 @@ public class BeeConomy extends JavaPlugin {
         this.playerConfig = null;
         this.commandListener = null;
         instance = null;
+    }
+
+    private void loadConfigs() {
+        this.messageConfig = new MessageConfig(this);
+        this.config = new Config(this);
+    }
+
+    private void loadEconomy() {
+        this.ecoManager = new EconomyManager(this);
+        this.playerConfig = new PlayerConfig(this);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -87,8 +94,10 @@ public class BeeConomy extends JavaPlugin {
         Plugin vault = getServer().getPluginManager().getPlugin("Vault");
         if (vault != null && vault.isEnabled()) {
             Bukkit.getServicesManager().register(Economy.class, new CustomEconomy(this), vault, ServicePriority.Normal);
+            Message.VAULT_HOOK_SUCCESS.log();
             return true;
         }
+        Message.VAULT_HOOK_FAILURE.log();
         return false;
     }
 
@@ -103,6 +112,10 @@ public class BeeConomy extends JavaPlugin {
 
     public PlayerConfig getPlayerConfig() {
         return playerConfig;
+    }
+
+    public MessageConfig getMessageConfig() {
+        return messageConfig;
     }
 
     public static BeeConomy getInstance() {

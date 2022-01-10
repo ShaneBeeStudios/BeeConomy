@@ -1,6 +1,5 @@
 package com.shanebeestudios.bc.command;
 
-import com.shanebeestudios.bc.config.Config;
 import com.shanebeestudios.bc.eco.EconomyPlayer;
 import com.shanebeestudios.bc.util.Message;
 import org.bukkit.Bukkit;
@@ -27,7 +26,7 @@ public class EcoBalCmd extends EcoBaseCmd {
         } else if (sender instanceof Player) {
             offlinePlayer = ((Player) sender);
         } else {
-            Message.CMD_BAL_NO_CONSOLE.sendMessage(sender, Config.ECO_NAME);
+            Message.CMD_BAL_NO_CONSOLE.sendMessage(sender);
 
             return true;
         }
@@ -35,12 +34,15 @@ public class EcoBalCmd extends EcoBaseCmd {
         if (economyPlayer != null) {
             double balance = economyPlayer.getBalance();
             if (offlinePlayer == sender) {
-                Message.CMD_BAL_BALANCE.sendMessage(sender, Config.ECO_SYMBOL, balance);
+                Message.CMD_BAL_BALANCE.replaceMoney(balance).sendMessage(sender);
             } else {
-                Message.CMD_BAL_BALANCE_OTHER.sendMessage(sender, offlinePlayer.getName(), Config.ECO_SYMBOL, balance);
+                Message.CMD_BAL_BALANCE_OTHER
+                        .replacePlayer(offlinePlayer)
+                        .replaceMoney(balance)
+                        .sendMessage(sender);
             }
         } else {
-            Message.NO_ACCOUNT.sendMessage(sender, offlinePlayer.getName());
+            Message.NO_ACCOUNT.replacePlayer(offlinePlayer).sendMessage(sender);
         }
         return true;
     }

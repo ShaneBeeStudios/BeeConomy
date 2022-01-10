@@ -1,6 +1,5 @@
 package com.shanebeestudios.bc.command;
 
-import com.shanebeestudios.bc.config.Config;
 import com.shanebeestudios.bc.eco.EconomyPlayer;
 import com.shanebeestudios.bc.util.Message;
 import org.apache.commons.lang.math.NumberUtils;
@@ -23,13 +22,20 @@ public class EcoRemoveCmd extends EcoBaseCmd {
                 EconomyPlayer economyPlayer = economyManager.getEcoPlayer(offlinePlayer);
                 if (economyPlayer != null) {
                     if (economyPlayer.getBalance() < amount) {
-                        Message.CMD_REM_NOT_ENOUGH.sendMessage(sender, offlinePlayer.getName(), Config.ECO_SYMBOL, economyPlayer.getBalance());
+                        Message.CMD_REM_NOT_ENOUGH
+                                .replacePlayer(offlinePlayer)
+                                .replaceMoney(economyPlayer.getBalance())
+                                .sendMessage(sender);
                         return true;
                     }
                     economyPlayer.withdraw(amount);
-                    Message.CMD_REM_SUCCESS.sendMessage(sender, Config.ECO_SYMBOL, amount, offlinePlayer.getName(), Config.ECO_SYMBOL, economyPlayer.getBalance());
+                    Message.CMD_REM_SUCCESS
+                            .replaceMoney(amount)
+                            .replacePlayer(offlinePlayer)
+                            .replaceMoney(economyPlayer.getBalance())
+                            .sendMessage(sender);
                 } else {
-                    Message.NO_ACCOUNT.sendMessage(sender, offlinePlayer.getName());
+                    Message.NO_ACCOUNT.replacePlayer(offlinePlayer).sendMessage(sender);
                 }
                 return true;
             }

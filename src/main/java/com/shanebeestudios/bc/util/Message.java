@@ -1,62 +1,106 @@
 package com.shanebeestudios.bc.util;
 
+import com.shanebeestudios.bc.BeeConomy;
+import com.shanebeestudios.bc.config.Config;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 public class Message {
 
     // Command Messages General
-    public static final Message UNKNOWN_COMMAND = get("&cUnknown command. &7Options: &b%s");
-    public static final Message NO_PERMISSION = get("&cYou do not have permission to use this command.");
-    public static final Message CMD_CORRECT_USAGE = get("&6Correct Usage: &b/eco %s");
-    public static final Message NO_ACCOUNT = get("&b%s&c does not have an account.");
+    public static final Message UNKNOWN_COMMAND = get("unknown-command");
+    public static final Message NO_PERMISSION = get("no-permission");
+    public static final Message CMD_CORRECT_USAGE = get("cmd-correct-usage");
+    public static final Message NO_ACCOUNT = get("no-account");
 
     // Command Messages Commands
-    public static final Message CMD_ADD_SUCCESS = get("&b%s%.2f &7has been added to the account of &b%s&7, bring their balance up to &b%s%.2f");
-    public static final Message CMD_BAL_NO_PERM_OTHER = get("&cYou do not have permission to check another player's balance!");
-    public static final Message CMD_BAL_NO_CONSOLE = get("&cSilly console you don't have any %s");
-    public static final Message CMD_BAL_BALANCE = get("&7Your balance is &b%s%.2f");
-    public static final Message CMD_BAL_BALANCE_OTHER = get("&7Balance of &b%s &7is &b%s%.2f");
-    public static final Message CMD_PAY_NO_CONSOLE = get("&cConsole can not pay players");
-    public static final Message CMD_PAY_BELOW_ZERO = get("&cYou can not send an amount less than &b%s0.00");
-    public static final Message CMD_PAY_NOT_SELF = get("&cYou can not pay yourself!");
-    public static final Message CMD_PAY_NOT_ENOUGH = get("&cYou do not have enough %s to send.");
-    public static final Message CMD_PAY_SUCCESS = get("&b%s%.2f &7has been added to the account of &b%s&7, bring their balance up to &b%s%.2f");
-    public static final Message CMD_REM_NOT_ENOUGH = get("&b%s &7does not have enough money in their account, they currently have &b%s%.2f");
-    public static final Message CMD_REM_SUCCESS = get("&b%s%.2f &7has been remove from the account of &b%s&7, bring their balance down to &b%s%.2f");
-    public static final Message CMD_SET_SUCCESS = get("&7Balance of &b%s &7was set to &b%s%.2f");
-    public static final Message CMD_BAL_TOP_HEADER = get("&7Top Balances [&6%s&7]");
-    public static final Message CMD_BAL_TOP_PAGE = get("&7Page &b%s&7/&b%s");
-    public static final Message CMD_BAL_TOP_BALANCE = get("&7[&a%s&7] Player: &b%s&r, &7Balance: &6%s&b%.2f");
+    public static final Message CMD_ADD_SUCCESS = get("cmd-add-success");
+    public static final Message CMD_BAL_NO_PERM_OTHER = get("cmd-bal-no-perm-other");
+    public static final Message CMD_BAL_NO_CONSOLE = get("cmd-bal-no-console");
+    public static final Message CMD_BAL_BALANCE = get("cmd-bal-balance");
+    public static final Message CMD_BAL_BALANCE_OTHER = get("cmd-bal-balance-other");
+    public static final Message CMD_PAY_NO_CONSOLE = get("cmd-pay-no-console");
+    public static final Message CMD_PAY_BELOW_ZERO = get("cmd-pay-below-zero");
+    public static final Message CMD_PAY_NOT_SELF = get("cmd-pay-not-self");
+    public static final Message CMD_PAY_NOT_ENOUGH = get("cmd-pay-not-enough");
+    public static final Message CMD_PAY_SUCCESS = get("cmd-pay-success");
+    public static final Message CMD_REM_NOT_ENOUGH = get("cmd-rem-not-enough");
+    public static final Message CMD_REM_SUCCESS = get("cmd-rem-success");
+    public static final Message CMD_SET_SUCCESS = get("cmd-set-success");
+    public static final Message CMD_BAL_TOP_HEADER = get("cmd-bal-top-header");
+    public static final Message CMD_BAL_TOP_PAGE = get("cmd-bal-top-page");
+    public static final Message CMD_BAL_TOP_BALANCE = get("cmd-bal-top-balance");
 
     // Config Messages
-    public static final Message PLAYER_CONFIG_LOADED = get("%s players have been &aloaded &7in &b%s&7ms!");
-    public static final Message PLAYER_CONFIG_NO_PLAYERS = get("No players found!");
+    public static final Message PLAYER_CONFIG_LOADED = get("player-config-loaded");
+    public static final Message PLAYER_CONFIG_NO_PLAYERS = get("player-config-no-players");
 
     // Logging Messages
-    public static final Message VAULT_HOOK_SUCCESS = get("Vault hook is &asuccessful");
-    public static final Message VAULT_HOOK_FAILURE = get("Could not hook into vault, plugin disabling");
-    public static final Message PLUGIN_LOAD_SUCCESS = get("BeeConomy successfully &aloaded &7in &b%s&7ms");
+    public static final Message VAULT_HOOK_SUCCESS = get("vault-hook-success");
+    public static final Message VAULT_HOOK_FAILURE = get("vault-hook-failure");
+    public static final Message PLUGIN_LOAD_SUCCESS = get("plugin-load-success");
 
-    private static Message get(String message) {
-        return new Message(message);
+    private static Message get(String path) {
+        return new Message(BeeConomy.getInstance().getMessageConfig().get(path));
     }
 
     private final String message;
+    private String tempMessage;
 
     public Message(String message) {
         this.message = message;
     }
 
-    public void sendMessage(CommandSender sender, Object... objects) {
-        Util.sendColMsg(sender, message, objects);
+    private String getMessage() {
+        String temp = tempMessage == null ? message : tempMessage;
+        tempMessage = null;
+        temp = temp.replace("<currency>", Config.ECO_NAME);
+        temp = temp.replace("<currency-symbol>", Config.ECO_SYMBOL);
+        return temp;
     }
 
-    public void sendMessageNoPrx(CommandSender sender, Object... objects) {
-        Util.sendColMsgNoPre(sender, message, objects);
+    public void sendMessage(CommandSender sender) {
+        Util.sendColMsg(sender, getMessage());
     }
 
-    public void log(Object... objects) {
-        Util.log(message, objects);
+    public void sendMessageNoPrx(CommandSender sender) {
+        Util.sendColMsgNoPre(sender, getMessage());
+    }
+
+    public void log() {
+        Util.log(getMessage());
+    }
+
+    private void replace(String regex, String replacement) {
+        if (tempMessage == null) {
+            tempMessage = message;
+        }
+        tempMessage = tempMessage.replaceFirst(regex, replacement);
+    }
+
+    public Message replacePlayer(OfflinePlayer player) {
+        String name = player.getName();
+        if (name == null) {
+            name = player.getUniqueId().toString().substring(0, 10);
+        }
+        replace("<player>", name);
+        return this;
+    }
+
+    public Message replaceMoney(double money) {
+        String s = String.format("%.2f", money);
+        replace("<money>", s);
+        return this;
+    }
+
+    public Message replaceNumber(long number) {
+        replace("<number>", "" + number);
+        return this;
+    }
+
+    public Message replaceString(String string) {
+        replace("<string>", string);
+        return this;
     }
 
 }
