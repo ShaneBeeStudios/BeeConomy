@@ -45,7 +45,6 @@ public class BeeConomy extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        loadEconomy();
         registerCommands();
         registerListeners();
         Message.PLUGIN_LOAD_SUCCESS.replaceNumber(System.currentTimeMillis() - start).log();
@@ -64,9 +63,6 @@ public class BeeConomy extends JavaPlugin {
     private void loadConfigs() {
         this.messageConfig = new MessageConfig(this);
         this.config = new Config(this);
-    }
-
-    private void loadEconomy() {
         this.ecoManager = new EconomyManager(this);
         this.playerConfig = new PlayerConfig(this);
     }
