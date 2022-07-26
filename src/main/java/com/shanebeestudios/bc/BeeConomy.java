@@ -40,11 +40,13 @@ public class BeeConomy extends JavaPlugin {
         long start = System.currentTimeMillis();
         instance = this;
 
-        loadConfigs();
+        loadPluginConfigs();
         if (!registerEconomy()) {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
+        loadEcoConfigs();
         registerCommands();
         registerListeners();
         Message.PLUGIN_LOAD_SUCCESS.replaceNumber(System.currentTimeMillis() - start).log();
@@ -60,9 +62,12 @@ public class BeeConomy extends JavaPlugin {
         instance = null;
     }
 
-    private void loadConfigs() {
-        this.messageConfig = new MessageConfig(this);
+    private void loadPluginConfigs() {
         this.config = new Config(this);
+        this.messageConfig = new MessageConfig(this);
+    }
+
+    private void loadEcoConfigs() {
         this.ecoManager = new EconomyManager(this);
         this.playerConfig = new PlayerConfig(this);
     }
