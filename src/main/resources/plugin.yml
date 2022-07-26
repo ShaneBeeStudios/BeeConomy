@@ -2,6 +2,7 @@ name: BeeConomy
 main: com.shanebeestudios.bc.BeeConomy
 version: '${project.version}'
 author: ShaneBee
+api-version: "1.13"
 softdepend:
   - Vault
 commands:
