@@ -13,6 +13,7 @@ public class EcoAddCmd extends EcoBaseCmd {
         this.usage = "add <player> <amount>";
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean run() {
         if (args.length == 2) {

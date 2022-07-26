@@ -14,6 +14,7 @@ public class EcoPayCmd extends EcoBaseCmd {
         this.usage = "pay <player> <amount>";
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean run() {
         if (args.length == 2) {

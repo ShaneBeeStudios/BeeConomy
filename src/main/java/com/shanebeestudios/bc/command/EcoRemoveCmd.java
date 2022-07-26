@@ -13,6 +13,7 @@ public class EcoRemoveCmd extends EcoBaseCmd {
         this.usage = "remove <player> <amount>";
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean run() {
         if (args.length == 2) {

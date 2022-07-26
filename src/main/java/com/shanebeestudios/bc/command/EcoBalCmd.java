@@ -14,6 +14,7 @@ public class EcoBalCmd extends EcoBaseCmd {
         setDefaultPerm("balance.other", false);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean run() {
         OfflinePlayer offlinePlayer;
