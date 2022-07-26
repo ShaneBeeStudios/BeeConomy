@@ -13,17 +13,23 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommandListener implements TabExecutor {
 
-    private final List<EcoBaseCmd> COMMANDS = new ArrayList<>();
+    private final Map<String, EcoBaseCmd> COMMANDS = new HashMap<>();
 
     public CommandListener(List<Class<? extends EcoBaseCmd>> commands) {
         commands.forEach(cmdClass -> {
             try {
                 EcoBaseCmd ecoBaseCmd = cmdClass.newInstance();
-                COMMANDS.add(ecoBaseCmd);
+                COMMANDS.put(ecoBaseCmd.getName(), ecoBaseCmd);
+                String commandAlias = ecoBaseCmd.getAlias();
+                if (commandAlias != null) {
+                    COMMANDS.put(commandAlias, ecoBaseCmd);
+                }
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -33,31 +39,31 @@ public class CommandListener implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (args.length > 0) {
-            EcoBaseCmd command = null;
-            for (EcoBaseCmd baseCmd : COMMANDS) {
-                if (baseCmd.matches(args[0])) {
-                    command = baseCmd;
-                }
-            }
-            if (command != null) {
-                if (sender instanceof Player && !command.hasPermission(sender)) {
+            EcoBaseCmd baseCmd = COMMANDS.get(args[0]);
+            if (baseCmd != null) {
+                if (sender instanceof Player && !baseCmd.hasPermission(sender)) {
                     Message.NO_PERMISSION.sendMessage(sender);
                     return true;
                 }
-                command.processCmd(sender, args);
+                baseCmd.processCmd(sender, args);
                 return true;
             }
         }
         StringBuilder builder = new StringBuilder();
-        COMMANDS.forEach(c -> {
-            if (c.hasPermission(sender)) {
-                builder.append("&b").append(c.getName());
-                if (c.getAlias() != null) {
-                    builder.append("&7(&b").append(c.getAlias()).append("&7)");
-                }
-                builder.append("&7, ");
+        List<EcoBaseCmd> availableCommands = new ArrayList<>();
+        COMMANDS.values().forEach(command -> {
+            if (command.hasPermission(sender) && !availableCommands.contains(command)) {
+                availableCommands.add(command);
             }
         });
+        availableCommands.forEach(command -> {
+            builder.append("&b").append(command.getName());
+            if (command.getAlias() != null) {
+                builder.append("&7(&b").append(command.getAlias()).append("&7)");
+            }
+            builder.append("&7, ");
+        });
+
         Message.UNKNOWN_COMMAND.replaceString(builder.toString()).sendMessage(sender);
         return true;
     }
@@ -102,9 +108,9 @@ public class CommandListener implements TabExecutor {
 
     private List<String> getCommandsWithPerm(CommandSender sender) {
         List<String> commands = new ArrayList<>();
-        COMMANDS.forEach(baseCmd -> {
+        COMMANDS.forEach((name, baseCmd) -> {
             if (baseCmd.hasPermission(sender)) {
-                commands.add(baseCmd.getName());
+                commands.add(name);
             }
         });
         return commands;
