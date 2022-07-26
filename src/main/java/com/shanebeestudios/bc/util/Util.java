@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class Util {
 
-    public static final String CONSOLE_PREFIX = "&7[&3&lBee&b&lConomy&7] ";
+    public static final String CONSOLE_PREFIX = "&7[&bBee&3Conomy&7] ";
     private static final String[] BUKKIT_VERSION = Bukkit.getServer().getBukkitVersion().split("-")[0].split("\\.");
     private static final Pattern HEX_PATTERN = Pattern.compile("<#([A-Fa-f0-9]){6}>");
 
