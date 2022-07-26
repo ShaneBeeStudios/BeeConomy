@@ -87,6 +87,11 @@ public class Message {
         return this;
     }
 
+    public Message replacePlayer(String player) {
+        replace("<player>", player);
+        return this;
+    }
+
     public Message replaceMoney(double money) {
         String s = String.format("%.2f", money);
         replace("<money>", s);

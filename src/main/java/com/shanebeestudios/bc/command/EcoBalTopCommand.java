@@ -109,7 +109,7 @@ public class EcoBalTopCommand extends EcoBaseCmd {
         int size = Math.min(totalPlayers, (page * 10));
         for (int i = (page * 10) - 10; i < size; i++) {
             Message.CMD_BAL_TOP_BALANCE.replaceNumber(i + 1)
-                    .replaceString(SORTED_PLAYERS.get(i))
+                    .replacePlayer(SORTED_PLAYERS.get(i))
                     .replaceMoney(SORTED_BALANCES.get(i))
                     .sendMessageNoPrx(sender);
         }
