@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class BeeConomy extends JavaPlugin {
 
     private static BeeConomy instance;
@@ -40,13 +41,16 @@ public class BeeConomy extends JavaPlugin {
         long start = System.currentTimeMillis();
         instance = this;
 
-        loadPluginConfigs();
-        if (!registerEconomy()) {
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
+        // Load configs
+        this.config = new Config(this);
+        this.messageConfig = new MessageConfig(this);
+        this.ecoManager = new EconomyManager(this);
 
-        loadEcoConfigs();
+        // Register economy
+        // If not registered, plugin shuts down
+        if (!registerEconomy()) return;
+
+        this.playerConfig = new PlayerConfig(this);
         registerCommands();
         registerListeners();
         Message.PLUGIN_LOAD_SUCCESS.replaceNumber(System.currentTimeMillis() - start).log();
@@ -60,16 +64,6 @@ public class BeeConomy extends JavaPlugin {
         this.playerConfig = null;
         this.commandListener = null;
         instance = null;
-    }
-
-    private void loadPluginConfigs() {
-        this.config = new Config(this);
-        this.messageConfig = new MessageConfig(this);
-    }
-
-    private void loadEcoConfigs() {
-        this.ecoManager = new EconomyManager(this);
-        this.playerConfig = new PlayerConfig(this);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -99,6 +93,7 @@ public class BeeConomy extends JavaPlugin {
             return true;
         }
         Message.VAULT_HOOK_FAILURE.log();
+        Bukkit.getPluginManager().disablePlugin(this);
         return false;
     }
 
