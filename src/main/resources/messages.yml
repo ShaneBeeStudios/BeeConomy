@@ -36,8 +36,8 @@ cmd-bal-top-balance: "&7[&a<number>&7] Player: &b<player>&r, &7Balance: &6<curre
 
 # Plugin Messages
 # Do not use hex colors here as these messages are only sent to console
-player-config-loaded: "<number> players have been &aloaded &7in &b<number>&7ms!"
+player-config-loaded: "<number> players have been &aloaded &7in &b<number> &7ms!"
 player-config-no-players: "No players found!"
 vault-hook-success: "Vault hook is &asuccessful"
 vault-hook-failure: "Could not hook into vault, plugin disabling"
-plugin-load-success: "BeeConomy successfully &aloaded &7in &b<number>&7ms"
+plugin-load-success: "BeeConomy successfully &aloaded &7in &b<number> &7ms"
