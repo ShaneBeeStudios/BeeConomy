@@ -16,6 +16,7 @@ import com.shanebeestudios.bc.listener.CommandListener;
 import com.shanebeestudios.bc.listener.PlayerListener;
 import com.shanebeestudios.bc.util.Message;
 import net.milkbowl.vault.economy.Economy;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
@@ -53,6 +54,7 @@ public class BeeConomy extends JavaPlugin {
         this.playerConfig = new PlayerConfig(this);
         registerCommands();
         registerListeners();
+        new Metrics(this, 16794);
         Message.PLUGIN_LOAD_SUCCESS.replaceNumber(System.currentTimeMillis() - start).log();
     }
 
