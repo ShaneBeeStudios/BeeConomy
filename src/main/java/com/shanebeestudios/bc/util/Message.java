@@ -43,6 +43,20 @@ public class Message {
     public static final Message VAULT_HOOK_FAILURE = get("vault-hook-failure");
     public static final Message PLUGIN_LOAD_SUCCESS = get("plugin-load-success");
 
+    // Setting Messages
+    public static final Message UPDATE_CHECKER_CHECKING = get("update-checker-checking");
+    public static final Message UPDATE_CHECKER_BETA = get("update-checker-beta");
+    public static final Message UPDATE_CHECKER_UP_TO_DATE = get("update-checker-up-to-date");
+    public static final Message UPDATE_CHECKER_NOT_UP_TO_DATE = get("update-checker-not-up-to-date");
+    public static final Message UPDATE_CHECKER_CURRENT_VERSION = get("update-checker-current-version");
+    public static final Message UPDATE_CHECKER_AVAILABLE_VERSION = get("update-checker-available-version");
+    public static final Message UPDATE_CHECKER_DOWNLOAD_SITE = get("update-checker-download-site");
+    public static final Message UPDATE_CHECKER_DISABLED = get("update-checker-disabled");
+    public static final Message UPDATE_CHECKER_FAILED = get("update-checker-failed");
+    public static final Message UPDATE_CHECKER_PLAYER_AVAILABLE = get("update-checker-player-available");
+    public static final Message UPDATE_CHECKER_PLAYER_DOWNLOAD = get("update-checker-player-download");
+
+
     private static Message get(String path) {
         return new Message(BeeConomy.getInstance().getMessageConfig().get(path));
     }

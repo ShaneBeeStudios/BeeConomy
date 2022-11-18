@@ -4,6 +4,14 @@
 # Message prefix
 prefix: '&7[<#23C8A8>&lBee<#23B4C8>&lConomy&7] '
 
+settings:
+  # Enable this if you would like to see more verbose debug messages
+  debug: false
+
+  # Enable this to automatically check for BeeConomy updates
+  # Disable this if you do not want to check for updates, or it takes too long/has issues checking
+  update-checker: true
+
 economy:
   # The amount of money new players will receive
   starting-amount: 100.0

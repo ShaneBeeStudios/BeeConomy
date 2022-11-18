@@ -17,6 +17,10 @@ public class Config {
     // Config stuff
     public static String PREFIX;
 
+    // Settings
+    public static boolean SETTINGS_UPDATE_CHECKER;
+    public static boolean SETTINGS_DEBUG;
+
     // Eco
     public static double ECO_STARTING_AMOUNT;
     public static String ECO_NAME;
@@ -69,6 +73,9 @@ public class Config {
 
     private void loadConfigs() {
         PREFIX = config.getString("prefix");
+
+        SETTINGS_UPDATE_CHECKER = config.getBoolean("settings.update-checker");
+        SETTINGS_DEBUG = config.getBoolean("settings.debug");
 
         ECO_STARTING_AMOUNT = config.getDouble("economy.starting-amount");
         ECO_NAME = config.getString("economy.name");

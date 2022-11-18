@@ -15,11 +15,13 @@ import com.shanebeestudios.bc.eco.EconomyManager;
 import com.shanebeestudios.bc.listener.CommandListener;
 import com.shanebeestudios.bc.listener.PlayerListener;
 import com.shanebeestudios.bc.util.Message;
+import com.shanebeestudios.bc.util.UpdateChecker;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -55,6 +57,7 @@ public class BeeConomy extends JavaPlugin {
         registerCommands();
         registerListeners();
         new Metrics(this, 16794);
+        checkUpdate();
         Message.PLUGIN_LOAD_SUCCESS.replaceNumber(System.currentTimeMillis() - start).log();
     }
 
@@ -84,7 +87,9 @@ public class BeeConomy extends JavaPlugin {
     }
 
     private void registerListeners() {
-        Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new PlayerListener(this), this);
+        pluginManager.registerEvents(new UpdateChecker(this), this);
     }
 
     private boolean registerEconomy() {
@@ -97,6 +102,14 @@ public class BeeConomy extends JavaPlugin {
         Message.VAULT_HOOK_FAILURE.log();
         Bukkit.getPluginManager().disablePlugin(this);
         return false;
+    }
+
+    private void checkUpdate() {
+        if (Config.SETTINGS_UPDATE_CHECKER) {
+            UpdateChecker.checkForUpdate(getDescription().getVersion());
+        } else {
+            Message.UPDATE_CHECKER_DISABLED.log();
+        }
     }
 
     @NotNull
