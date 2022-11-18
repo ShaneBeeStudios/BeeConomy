@@ -33,6 +33,7 @@ cmd-set-success: "&7Balance of &b<player> &7was set to &b<currency-symbol><money
 cmd-bal-top-header: "&7Top Balances [&6<string>&7]"
 cmd-bal-top-page: "&7Page &b<number>&7/&b<number>"
 cmd-bal-top-balance: "&7[&a<number>&7] Player: &b<player>&r, &7Balance: &6<currency-symbol><money>"
+cmd-bal-top-balance-sorting: "&7Players are still being sorted, please wait!"
 
 # Plugin Messages
 # Do not use hex colors here as these messages are only sent to console

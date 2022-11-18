@@ -47,24 +47,25 @@ public class EcoBalTopCommand extends EcoBaseCmd {
             EconomyManager ecoManager = PLUGIN.getEcoManager();
             Collection<EconomyPlayer> allEcoPlayers = ecoManager.getAllEcoPlayers();
             Map<String, Double> ecoPlayerBalMap = new HashMap<>();
-            allEcoPlayers.forEach(economyPlayer -> {
-                String name = economyPlayer.getName();
-                if (name == null) {
-                    name = economyPlayer.getUuid().toString().substring(0, 10);
-                }
-                ecoPlayerBalMap.put(name, economyPlayer.getBalance());
-            });
+
             // Sort on another thread to prevent overloading server
             int finalPage = page;
             SCHEDULER.runTaskAsynchronously(PLUGIN, () -> {
+                allEcoPlayers.forEach(economyPlayer -> {
+                    String name = economyPlayer.getName();
+                    if (name == null) {
+                        name = economyPlayer.getUuid().toString().substring(0, 10);
+                    }
+                    ecoPlayerBalMap.put(name, economyPlayer.getBalance());
+                });
+
                 sortBalances(ecoPlayerBalMap, SORTED_BALANCES, SORTED_PLAYERS);
                 TIME = DTF.format(LocalDateTime.now());
 
                 // Send messages back on main thread
                 SCHEDULER.runTaskLater(PLUGIN, () -> sendBalances(finalPage), 0);
-                SCHEDULER.runTaskLater(PLUGIN, this::resetBalances, 6000);
+                SCHEDULER.runTaskLater(PLUGIN, this::resetBalances, 100);
             });
-
         } else {
             sendBalances(page);
         }
@@ -93,6 +94,10 @@ public class EcoBalTopCommand extends EcoBaseCmd {
     }
 
     private void sendBalances(int page) {
+        if (SORTED_PLAYERS.isEmpty()) {
+            Message.CMD_BAL_TOP_BALANCE_SORTING.sendMessage(sender);
+            return;
+        }
         Message.CMD_BAL_TOP_HEADER.replaceString(TIME).sendMessage(sender);
         int totalPlayers = SORTED_PLAYERS.size();
         if (totalPlayers == 0) {

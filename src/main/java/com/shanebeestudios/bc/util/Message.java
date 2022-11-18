@@ -30,6 +30,7 @@ public class Message {
     public static final Message CMD_BAL_TOP_HEADER = get("cmd-bal-top-header");
     public static final Message CMD_BAL_TOP_PAGE = get("cmd-bal-top-page");
     public static final Message CMD_BAL_TOP_BALANCE = get("cmd-bal-top-balance");
+    public static final Message CMD_BAL_TOP_BALANCE_SORTING = get("cmd-bal-top-balance-sorting");
 
     // Config Messages
     public static final Message PLAYER_CONFIG_LOADED = get("player-config-loaded");
