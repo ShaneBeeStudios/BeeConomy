@@ -3,6 +3,7 @@ package com.shanebeestudios.bc.eco;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -12,9 +13,10 @@ public class EconomyPlayer {
     private double balance;
     private String name;
 
-    public EconomyPlayer(UUID uuid, double balance) {
+    public EconomyPlayer(UUID uuid, double balance, @Nullable String name) {
         this.uuid = uuid;
         this.balance = balance;
+        this.name = name;
     }
 
     public UUID getUuid() {
@@ -24,11 +26,6 @@ public class EconomyPlayer {
     @NotNull
     public OfflinePlayer getBukkitPlayer() {
         return Bukkit.getOfflinePlayer(uuid);
-    }
-
-    public boolean isOnline() {
-        OfflinePlayer player = getBukkitPlayer();
-        return player.isOnline();
     }
 
     public String getName() {

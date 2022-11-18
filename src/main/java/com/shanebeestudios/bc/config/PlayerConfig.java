@@ -43,11 +43,15 @@ public class PlayerConfig {
         int amount = 0;
         for (String key : section.getKeys(false)) {
             double balance = 0.0;
+            String name = null;
             if (config.isDouble("players." + key + ".balance")) {
                 balance = config.getDouble("players." + key + ".balance");
             }
+            if (config.isString("players." + key + ".name")) {
+                name = config.getString("players." + key + ".name");
+            }
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(key));
-            economyManager.createEconomyPlayerAccount(offlinePlayer, balance);
+            economyManager.createEconomyPlayerAccount(offlinePlayer, balance, name);
             amount++;
         }
         Message.PLAYER_CONFIG_LOADED

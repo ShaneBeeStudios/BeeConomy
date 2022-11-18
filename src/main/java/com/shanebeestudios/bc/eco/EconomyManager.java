@@ -29,14 +29,18 @@ public class EconomyManager {
         return ECONOMY_PLAYERS.containsKey(player.getUniqueId());
     }
 
-    public EconomyPlayer createEconomyPlayerAccount(@NotNull OfflinePlayer player, double balance) {
-        EconomyPlayer economyPlayer = new EconomyPlayer(player.getUniqueId(), balance);
+    public EconomyPlayer createEconomyPlayerAccount(@NotNull OfflinePlayer player, double balance, @Nullable String name) {
+        EconomyPlayer economyPlayer = new EconomyPlayer(player.getUniqueId(), balance, name);
         ECONOMY_PLAYERS.put(player.getUniqueId(), economyPlayer);
         return economyPlayer;
     }
 
     public EconomyPlayer createEconomyPlayerAccount(OfflinePlayer player) {
-        return createEconomyPlayerAccount(player, START_AMOUNT);
+        String name = null;
+        if (player.getName() != null) {
+            name = player.getName();
+        }
+        return createEconomyPlayerAccount(player, START_AMOUNT, name);
     }
 
     /**
