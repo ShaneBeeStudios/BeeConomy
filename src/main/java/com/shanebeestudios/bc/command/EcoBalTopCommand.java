@@ -64,7 +64,7 @@ public class EcoBalTopCommand extends EcoBaseCmd {
 
                 // Send messages back on main thread
                 SCHEDULER.runTaskLater(PLUGIN, () -> sendBalances(finalPage), 0);
-                SCHEDULER.runTaskLater(PLUGIN, this::resetBalances, 100);
+                SCHEDULER.runTaskLater(PLUGIN, this::resetBalances, 6000);
             });
         } else {
             sendBalances(page);
