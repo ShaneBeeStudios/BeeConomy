@@ -41,19 +41,17 @@ public class EconomyManager {
 
     /**
      * Will return an {@link EconomyPlayer} if an account is created,
-     * or will create a new account if the player is online, otherwise null.
+     * or will create a new account.
      *
      * @param player Player to check for account
-     * @return account if already created, or if player is online will return a new account, otherwise null.
+     * @return account if already created, or new account.
      */
     @Nullable
     public EconomyPlayer getEcoPlayer(OfflinePlayer player) {
         if (hasAccount(player)) {
             return ECONOMY_PLAYERS.get(player.getUniqueId());
-        } else if (player.isOnline()) {
-            return createEconomyPlayerAccount(player);
         }
-        return null;
+        return createEconomyPlayerAccount(player);
     }
 
     public Collection<EconomyPlayer> getAllEcoPlayers() {
