@@ -92,12 +92,17 @@ public class EconomyManager {
     public void saveAllPlayers() {
         PlayerConfig playerConfig = plugin.getPlayerConfig();
         if (playerConfig != null) {
-            playerConfig.saveAllPlayers();
+            playerConfig.saveAllPlayers(true);
         }
     }
 
     private void startConfigTimer() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::saveAllPlayers, 6000, 6000);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+            PlayerConfig playerConfig = plugin.getPlayerConfig();
+            if (playerConfig != null) {
+                playerConfig.saveAllPlayers(false);
+            }
+        }, 6000, 6000);
     }
 
 }

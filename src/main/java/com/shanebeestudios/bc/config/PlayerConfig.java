@@ -60,8 +60,10 @@ public class PlayerConfig {
                 .log();
     }
 
-    public void saveAllPlayers() {
-        Message.PLAYER_CONFIG_SAVING.log();
+    public void saveAllPlayers(boolean log) {
+        if (log) {
+            Message.PLAYER_CONFIG_SAVING.log();
+        }
         long start = System.currentTimeMillis();
         int flagged = 0;
         for (EconomyPlayer ecoPlayer : plugin.getEcoManager().getFlaggedForSaving()) {
@@ -73,7 +75,9 @@ public class PlayerConfig {
             saveFile();
         }
         long finish = System.currentTimeMillis() - start;
-        Message.PLAYER_CONFIG_SAVED.replaceNumber(flagged).replaceNumber(finish).log();
+        if (log) {
+            Message.PLAYER_CONFIG_SAVED.replaceNumber(flagged).replaceNumber(finish).log();
+        }
     }
 
     public void savePlayer(@NotNull EconomyPlayer economyPlayer) {
