@@ -12,11 +12,13 @@ public class EconomyPlayer {
     private final UUID uuid;
     private double balance;
     private String name;
+    private final EconomyManager economyManager;
 
-    public EconomyPlayer(UUID uuid, double balance, @Nullable String name) {
+    EconomyPlayer(UUID uuid, double balance, @Nullable String name, EconomyManager economyManager) {
         this.uuid = uuid;
         this.balance = balance;
         this.name = name;
+        this.economyManager = economyManager;
     }
 
     public UUID getUuid() {
@@ -51,6 +53,7 @@ public class EconomyPlayer {
      */
     public void setBalance(double balance) {
         this.balance = balance;
+        this.economyManager.flagForSaving(this);
     }
 
     /**
@@ -60,6 +63,7 @@ public class EconomyPlayer {
      */
     public void deposit(double amount) {
         this.balance += amount;
+        this.economyManager.flagForSaving(this);
     }
 
     /**
@@ -69,6 +73,7 @@ public class EconomyPlayer {
      */
     public void withdraw(double amount) {
         this.balance -= amount;
+        this.economyManager.flagForSaving(this);
     }
 
 }

@@ -8,8 +8,10 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -17,6 +19,7 @@ public class EconomyManager {
 
     private final BeeConomy plugin;
     private final Map<UUID, EconomyPlayer> ECONOMY_PLAYERS = new HashMap<>();
+    private final List<EconomyPlayer> FLAG_FOR_SAVING = new ArrayList<>();
     private final double START_AMOUNT;
 
     public EconomyManager(BeeConomy plugin) {
@@ -30,7 +33,7 @@ public class EconomyManager {
     }
 
     public EconomyPlayer createEconomyPlayerAccount(@NotNull OfflinePlayer player, double balance, @Nullable String name) {
-        EconomyPlayer economyPlayer = new EconomyPlayer(player.getUniqueId(), balance, name);
+        EconomyPlayer economyPlayer = new EconomyPlayer(player.getUniqueId(), balance, name, this);
         ECONOMY_PLAYERS.put(player.getUniqueId(), economyPlayer);
         return economyPlayer;
     }
@@ -40,7 +43,9 @@ public class EconomyManager {
         if (player.getName() != null) {
             name = player.getName();
         }
-        return createEconomyPlayerAccount(player, START_AMOUNT, name);
+        EconomyPlayer economyPlayer = createEconomyPlayerAccount(player, START_AMOUNT, name);
+        FLAG_FOR_SAVING.add(economyPlayer);
+        return economyPlayer;
     }
 
     /**
@@ -58,8 +63,30 @@ public class EconomyManager {
         return createEconomyPlayerAccount(player);
     }
 
+    /**
+     * Get a list of all currently loaded {@link EconomyPlayer EconomyPlayers}
+     *
+     * @return List of currently loaded eco players
+     */
     public Collection<EconomyPlayer> getAllEcoPlayers() {
         return ECONOMY_PLAYERS.values();
+    }
+
+    /**
+     * Get a list of {@link EconomyPlayer EconomyPlayers} that are flagged for saving.
+     * <p>Only new players, and players who's balances have changed
+     * will be flagged for saving. This is to reduce the amount of saving being done.</p>
+     *
+     * @return List of eco players flagged for saving
+     */
+    public List<EconomyPlayer> getFlaggedForSaving() {
+        return this.FLAG_FOR_SAVING;
+    }
+
+    void flagForSaving(EconomyPlayer economyPlayer) {
+        if (!this.FLAG_FOR_SAVING.contains(economyPlayer)) {
+            this.FLAG_FOR_SAVING.add(economyPlayer);
+        }
     }
 
     public void saveAllPlayers() {

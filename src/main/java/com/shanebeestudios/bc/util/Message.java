@@ -35,6 +35,8 @@ public class Message {
     // Config Messages
     public static final Message PLAYER_CONFIG_LOADED = get("player-config-loaded");
     public static final Message PLAYER_CONFIG_NO_PLAYERS = get("player-config-no-players");
+    public static final Message PLAYER_CONFIG_SAVING = get("player-config-saving");
+    public static final Message PLAYER_CONFIG_SAVED = get("player-config-saved");
 
     // Logging Messages
     public static final Message VAULT_HOOK_SUCCESS = get("vault-hook-success");

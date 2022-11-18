@@ -39,6 +39,9 @@ cmd-bal-top-balance-sorting: "&7Players are still being sorted, please wait!"
 # Do not use hex colors here as these messages are only sent to console
 player-config-loaded: "<number> players have been &aloaded &7in &b<number> &7ms!"
 player-config-no-players: "No players found!"
+player-config-saving: "Saving all players..."
+player-config-saved: "Saved <number> players in <number> ms"
 vault-hook-success: "Vault hook is &asuccessful"
 vault-hook-failure: "Could not hook into vault, plugin disabling"
 plugin-load-success: "BeeConomy successfully &aloaded &7in &b<number> &7ms"
+
