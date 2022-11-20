@@ -9,6 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,6 +62,14 @@ public class UpdateChecker implements Listener {
 
     public UpdateChecker(BeeConomy plugin) {
         this.PLUGIN = plugin;
+
+        String permString = "eco.update.check";
+        PluginManager pluginManager = plugin.getServer().getPluginManager();
+        if (pluginManager.getPermission(permString) == null) {
+            Permission permission = new Permission(permString);
+            permission.setDefault(PermissionDefault.OP);
+            pluginManager.addPermission(permission);
+        }
     }
 
     @EventHandler
@@ -66,7 +77,7 @@ public class UpdateChecker implements Listener {
         if (UPDATE_VERSION == null) return;
 
         Player player = event.getPlayer();
-        if (!player.hasPermission("beeconomy.update.check")) return;
+        if (!player.hasPermission("eco.update.check")) return;
 
         Bukkit.getScheduler().runTaskLater(PLUGIN, bukkitTask -> {
             Message.UPDATE_CHECKER_PLAYER_AVAILABLE.replaceString(UPDATE_VERSION).sendMessage(player);
