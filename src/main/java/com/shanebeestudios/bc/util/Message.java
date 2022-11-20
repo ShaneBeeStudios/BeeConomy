@@ -24,6 +24,7 @@ public class Message {
     public static final Message CMD_PAY_NOT_SELF = get("cmd-pay-not-self");
     public static final Message CMD_PAY_NOT_ENOUGH = get("cmd-pay-not-enough");
     public static final Message CMD_PAY_SUCCESS = get("cmd-pay-success");
+    public static final Message CMD_PAY_RECEIVED = get("cmd-pay-received");
     public static final Message CMD_REM_NOT_ENOUGH = get("cmd-rem-not-enough");
     public static final Message CMD_REM_SUCCESS = get("cmd-rem-success");
     public static final Message CMD_SET_SUCCESS = get("cmd-set-success");

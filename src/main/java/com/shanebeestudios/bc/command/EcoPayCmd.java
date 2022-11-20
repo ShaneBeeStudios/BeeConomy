@@ -22,15 +22,16 @@ public class EcoPayCmd extends EcoBaseCmd {
                 Message.CMD_PAY_NO_CONSOLE.sendMessage(sender);
                 return true;
             }
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
+            Player sendingPlayer = (Player) sender;
+            OfflinePlayer receivingPlayer = Bukkit.getOfflinePlayer(args[0]);
             if (NumberUtils.isNumber(args[1])) {
                 double amount = Double.parseDouble(args[1]);
                 if (amount < 0) {
                     Message.CMD_PAY_BELOW_ZERO.sendMessage(sender);
                     return true;
                 }
-                EconomyPlayer ecoReceiver = economyManager.getEcoPlayer(offlinePlayer);
-                EconomyPlayer ecoSender = economyManager.getEcoPlayer(((Player) sender));
+                EconomyPlayer ecoReceiver = economyManager.getEcoPlayer(receivingPlayer);
+                EconomyPlayer ecoSender = economyManager.getEcoPlayer(sendingPlayer);
                 if (ecoReceiver != null) {
                     assert ecoSender != null;
                     if (ecoSender == ecoReceiver) {
@@ -45,11 +46,16 @@ public class EcoPayCmd extends EcoBaseCmd {
                     ecoSender.withdraw(amount);
                     Message.CMD_PAY_SUCCESS
                             .replaceMoney(amount)
-                            .replacePlayer(offlinePlayer)
-                            .replaceMoney(ecoReceiver.getBalance())
+                            .replacePlayer(receivingPlayer)
                             .sendMessage(sender);
+                    if (receivingPlayer.isOnline()) {
+                        Message.CMD_PAY_RECEIVED
+                                .replaceMoney(amount)
+                                .replacePlayer(sendingPlayer)
+                                .sendMessage(receivingPlayer.getPlayer());
+                    }
                 } else {
-                    Message.NO_ACCOUNT.replacePlayer(offlinePlayer).sendMessage(sender);
+                    Message.NO_ACCOUNT.replacePlayer(receivingPlayer).sendMessage(sender);
                 }
                 return true;
             }
