@@ -32,7 +32,7 @@ public class EcoBalTopCommand extends EcoBaseCmd {
         super("balancetop", "baltop", false);
         this.usage = "balancetop";
         this.PLUGIN = BeeConomy.getInstance();
-        registerPermission("eco.command.balancetop.pages", false);
+        registerPermission("balancetop.pages", false);
     }
 
     @Override
