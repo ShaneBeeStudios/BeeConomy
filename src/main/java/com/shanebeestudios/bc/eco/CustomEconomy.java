@@ -135,7 +135,7 @@ public class CustomEconomy extends AbstractEconomy {
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double amount) {
         double balance = getBalance(offlinePlayer);
-        if (balance > amount) {
+        if (balance >= amount) {
             EconomyPlayer economyPlayer = economyManager.getEcoPlayer(offlinePlayer);
             if (economyPlayer == null) {
                 return new EconomyResponse(amount, 0, ResponseType.FAILURE, "no account");
