@@ -11,7 +11,7 @@ public class EcoBalCmd extends EcoBaseCmd {
     public EcoBalCmd() {
         super("balance", "bal", true);
         this.usage = "balance";
-        setDefaultPerm("balance.other", false);
+        registerPermission("balance.other", false);
     }
 
     @SuppressWarnings("deprecation")

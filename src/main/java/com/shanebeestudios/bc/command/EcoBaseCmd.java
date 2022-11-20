@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
 
 public abstract class EcoBaseCmd {
 
@@ -23,7 +24,7 @@ public abstract class EcoBaseCmd {
         this.cmdAlias = cmdAlias;
         this.plugin = BeeConomy.getInstance();
         this.economyManager = plugin.getEcoManager();
-        setDefaultPerm(cmdName, defaultPerm);
+        registerPermission(cmdName, defaultPerm);
     }
 
     public void processCmd(CommandSender sender, String[] args) {
@@ -57,10 +58,14 @@ public abstract class EcoBaseCmd {
         return sender.hasPermission("eco.command." + cmdName);
     }
 
-    void setDefaultPerm(String permSuffix, boolean defaultPerm) {
-        Permission permission = new Permission("eco.command." + permSuffix);
-        Bukkit.getPluginManager().addPermission(permission);
-        permission.setDefault(defaultPerm ? PermissionDefault.TRUE : PermissionDefault.OP);
+    void registerPermission(String permSuffix, boolean defaultPerm) {
+        String permString = "eco.command." + permSuffix;
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        if (pluginManager.getPermission(permString) == null) {
+            Permission permission = new Permission(permString);
+            permission.setDefault(defaultPerm ? PermissionDefault.TRUE : PermissionDefault.OP);
+            pluginManager.addPermission(permission);
+        }
     }
 
 }
