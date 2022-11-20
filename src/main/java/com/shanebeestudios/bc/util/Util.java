@@ -53,6 +53,7 @@ public class Util {
     }
 
     public static void sendColMsg(CommandSender sender, String message) {
+        if (message.isEmpty()) return;
         String prefix = CONSOLE_PREFIX;
         if (sender instanceof Player) {
             prefix = Config.PREFIX;
