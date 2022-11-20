@@ -16,6 +16,7 @@ import com.shanebeestudios.bc.listener.CommandListener;
 import com.shanebeestudios.bc.listener.PlayerListener;
 import com.shanebeestudios.bc.util.Message;
 import com.shanebeestudios.bc.util.UpdateChecker;
+import com.shanebeestudios.bc.util.Util;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -59,6 +60,9 @@ public class BeeConomy extends JavaPlugin {
         new Metrics(this, 16794);
         checkUpdate();
         Message.PLUGIN_LOAD_SUCCESS.replaceNumber(System.currentTimeMillis() - start).log();
+
+        // Debug available permissions
+        printPermissions();
     }
 
     @Override
@@ -102,6 +106,18 @@ public class BeeConomy extends JavaPlugin {
         Message.VAULT_HOOK_FAILURE.log();
         Bukkit.getPluginManager().disablePlugin(this);
         return false;
+    }
+
+    private void printPermissions() {
+        if (Config.SETTINGS_DEBUG) {
+            Util.log("Registered Permissions:");
+            Bukkit.getPluginManager().getPermissions().forEach(permission -> {
+                String name = permission.getName();
+                if (name.contains("eco.")) {
+                    Util.log("- %s : %s", name, permission.getDefault());
+                }
+            });
+        }
     }
 
     private void checkUpdate() {
