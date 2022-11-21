@@ -89,6 +89,14 @@ public class Message {
         Util.log(getMessage());
     }
 
+    public void warn() {
+        Util.warn(getMessage());
+    }
+
+    public void error() {
+        Util.error(getMessage());
+    }
+
     private void replace(String regex, String replacement) {
         if (tempMessage == null) {
             tempMessage = message;

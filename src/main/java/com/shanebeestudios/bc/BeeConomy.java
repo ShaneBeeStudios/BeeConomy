@@ -97,14 +97,15 @@ public class BeeConomy extends JavaPlugin {
     }
 
     private boolean registerEconomy() {
-        Plugin vault = getServer().getPluginManager().getPlugin("Vault");
+        PluginManager pluginManager = getServer().getPluginManager();
+        Plugin vault = pluginManager.getPlugin("Vault");
         if (vault != null && vault.isEnabled()) {
             Bukkit.getServicesManager().register(Economy.class, new CustomEconomy(this), vault, ServicePriority.Normal);
             Message.VAULT_HOOK_SUCCESS.log();
             return true;
         }
-        Message.VAULT_HOOK_FAILURE.log();
-        Bukkit.getPluginManager().disablePlugin(this);
+        Message.VAULT_HOOK_FAILURE.error();
+        pluginManager.disablePlugin(this);
         return false;
     }
 
