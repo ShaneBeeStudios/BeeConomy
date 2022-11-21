@@ -12,8 +12,19 @@ import java.util.regex.Pattern;
 public class Util {
 
     public static final String CONSOLE_PREFIX = "&7[&bBee&3Conomy&7] ";
-    private static final String[] BUKKIT_VERSION = Bukkit.getServer().getBukkitVersion().split("-")[0].split("\\.");
     private static final Pattern HEX_PATTERN = Pattern.compile("<#([A-Fa-f0-9]){6}>");
+    private static final int[] BUKKIT_VERSION = new int[3];
+
+    static {
+        String[] bukkitVersion = Bukkit.getServer().getBukkitVersion().split("-")[0].split("\\.");
+        BUKKIT_VERSION[0] = Integer.parseInt(bukkitVersion[0]);
+        BUKKIT_VERSION[1] = Integer.parseInt(bukkitVersion[1]);
+        try {
+            BUKKIT_VERSION[2] = Integer.parseInt(bukkitVersion[2]);
+        } catch (Exception ignore) {
+            BUKKIT_VERSION[2] = 0;
+        }
+    }
 
     /**
      * Shortcut for adding color to a string
@@ -93,14 +104,9 @@ public class Util {
      * @return True if running this version or higher
      */
     public static boolean isRunningMinecraft(int major, int minor, int revision) {
-        int maj = Integer.parseInt(BUKKIT_VERSION[0]);
-        int min = Integer.parseInt(BUKKIT_VERSION[1]);
-        int rev;
-        try {
-            rev = Integer.parseInt(BUKKIT_VERSION[2]);
-        } catch (Exception ignore) {
-            rev = 0;
-        }
+        int maj = BUKKIT_VERSION[0];
+        int min = BUKKIT_VERSION[1];
+        int rev = BUKKIT_VERSION[2];
         return maj > major || min > minor || (min == minor && rev >= revision);
     }
 
