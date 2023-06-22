@@ -7,6 +7,7 @@ website: https://github.com/ShaneBeeStudios/BeeConomy
 api-version: "1.13"
 softdepend:
   - Vault
+load: STARTUP
 commands:
   eco:
     description: Base economy command
