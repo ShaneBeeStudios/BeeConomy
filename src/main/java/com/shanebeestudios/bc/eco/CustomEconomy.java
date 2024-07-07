@@ -47,7 +47,7 @@ public class CustomEconomy extends AbstractEconomy {
 
     @Override
     public String format(double amount) {
-        return String.format("%s%.2f", CURRENCY_SYMBOL, amount);
+        return String.format("%s%,.2f", CURRENCY_SYMBOL, amount);
     }
 
     @Override
