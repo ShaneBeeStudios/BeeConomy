@@ -119,7 +119,7 @@ public class Message {
     }
 
     public Message replaceMoney(double money) {
-        String s = String.format("%.2f", money);
+        String s = String.format("%,.2f", money);
         replace("<money>", s);
         return this;
     }
