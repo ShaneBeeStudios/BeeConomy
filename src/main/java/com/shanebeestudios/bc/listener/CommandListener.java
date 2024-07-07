@@ -21,9 +21,11 @@ public class CommandListener implements TabExecutor {
 
     private final Map<String, EcoBaseCmd> COMMANDS = new HashMap<>();
 
+    @SuppressWarnings({"deprecation", "CallToPrintStackTrace", "RedundantSuppression"})
     public CommandListener(List<Class<? extends EcoBaseCmd>> commands) {
         commands.forEach(cmdClass -> {
             try {
+                // TODO Class#.newInstance() is deprecated, replace in future
                 EcoBaseCmd ecoBaseCmd = cmdClass.newInstance();
                 COMMANDS.put(ecoBaseCmd.getName(), ecoBaseCmd);
                 String commandAlias = ecoBaseCmd.getAlias();

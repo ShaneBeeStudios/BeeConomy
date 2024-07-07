@@ -1,0 +1,67 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group 'com.shanebeestudios'
+
+compileJava   {
+    sourceCompatibility = '8'
+    targetCompatibility = '8'
+    options.encoding = 'UTF-8'
+}
+
+// BeeConomy version
+version = '1.0.6'
+
+repositories {
+    mavenCentral()
+
+    // Spigot
+    maven {url'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'}
+
+    // JitPack
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    // Paper
+    compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+
+    // Jetbrains Annotations
+    compileOnly 'org.jetbrains:annotations:16.0.1'
+
+    // Vault
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+
+    // bStats
+    implementation 'org.bstats:bstats-bukkit:3.0.0'
+}
+
+build {
+    dependsOn(shadowJar)
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.compilerArgs.add("-Xlint:unchecked")
+            options.compilerArgs.add("-Xlint:deprecation")
+        }
+    }
+}
+
+processResources {
+    filter ReplaceTokens, tokens: ["version": version]
+}
+
+shadowJar {
+    archiveClassifier = null
+    relocate("org.bstats", "com.shanebeestudios.bc.metrics")
+}
+
+// Run task to build jar to another spot
+tasks.register('server', Copy) {
+    from shadowJar
+    // Change this to wherever you want your jar to build
+    into '/Users/ShaneBee/Desktop/Server/Skript/1-21/plugins'
+}

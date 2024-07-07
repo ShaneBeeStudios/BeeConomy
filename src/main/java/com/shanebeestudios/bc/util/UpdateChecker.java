@@ -42,8 +42,10 @@ public class UpdateChecker implements Listener {
         });
     }
 
+    @SuppressWarnings({"deprecation", "RedundantSuppression"})
     private static void getVersion(final Consumer<String> consumer) {
         try {
+            // TODO URL is deprecated, replace with URI in future
             URL url = new URL("https://api.github.com/repos/ShaneBeeStudios/BeeConomy/releases/latest");
             BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
             JsonObject jsonObject = new Gson().fromJson(reader, JsonObject.class);

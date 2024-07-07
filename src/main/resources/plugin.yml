@@ -1,10 +1,10 @@
 name: BeeConomy
 main: com.shanebeestudios.bc.BeeConomy
-version: '${project.version}'
+version: '@version@'
 author: ShaneBee
 description: A simple and easy to use economy system.
 website: https://github.com/ShaneBeeStudios/BeeConomy
-api-version: "1.13"
+api-version: '1.13'
 softdepend:
   - Vault
 load: STARTUP
